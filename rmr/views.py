@@ -6,10 +6,12 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.urls import reverse
-
-from rmr.models import Category, Page
-from rmr.forms import CategoryForm, PageForm, UserForm, UserProfileForm
+from rmr.models import UserProfile
+from rmr.models import Recipe
+from rmr.models import Category, Page,Rating
+from rmr.forms import CategoryForm, PageForm, UserForm, UserProfileForm,RecipeForm,RatingForm
 from django.shortcuts import redirect
+from django.shortcuts import render, get_object_or_404
 
 
 def index(request):
@@ -180,7 +182,25 @@ def visitor_cookie_handler(request):
     request.session['visits'] = visits
 
 
-def account(request):
+def userprofile(request, username):
+    userprofile = get_object_or_404(UserProfile, user__username=username)
+    if request.user.username == username:
+        ratings = Rating.objects.filter(user=userprofile.user)
+        recipes = Recipe.objects.filter(user=userprofile.user)
+        return render(request, 'rmr/user_profile.html', {'userprofile': userprofile, 'ratings': ratings, 'recipes': recipes})
+    else:
+        return render(request, '403.html')
 
-    return render(request, 'rmr/account.html', context={})
 
+def add_recipe(request, username):
+    username = request.user.username
+    if request.method == 'POST':
+        form = RecipeForm(request.POST, request.FILES)
+        if form.is_valid():
+            recipe = form.save(commit=False)
+            recipe.user = request.user
+            recipe.save()
+            return redirect('recipe_detail', pk=recipe.pk)
+    else:
+        form = RecipeForm()
+    return render(request, 'rmr/add_recipe.html', {'form': form, 'username': username})

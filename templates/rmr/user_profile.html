@@ -1,0 +1,39 @@
+{% extends 'rmr/base.html' %}
+{% load static %}
+
+{% block title_block %}
+{{ userprofile.user.username }}'s Profile
+{% endblock %}
+
+{% block body_block %}
+<h1>{{ userprofile.user.username }}'s Profile</h1>
+<p>Email: {{ userprofile.user.email }}</p>
+<p>Bio: {{ userprofile.bio }}</p>
+<h2>{{ userprofile.user.username }}'s Uploaded Recipes:</h2>
+
+{% if recipes %}
+{% for recipe in recipes %}
+<div class="recipe">
+    <h3>{{ recipe.title }}</h3>
+
+    <p>{{ recipe.description }}</p>
+    <p>Category: {{ recipe.category.name }}</p>
+
+</div>
+{% endfor %}
+
+{% else %}
+<p>No recipes uploaded yet.</p>
+{% endif %}
+
+{% if request.user.username == userprofile.user.username %}
+<h2>Add a New Recipe:</h2>
+<form enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    {{ recipe_form.as_p }}
+<a href="{% url 'rmr:add_recipe' username=userprofile.user.username %}">Add Recipe</a>
+
+
+</form>
+{% endif %}
+{% endblock %}

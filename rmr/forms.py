@@ -1,5 +1,5 @@
 from django import forms
-from rmr.models import Category, Page, UserProfile
+from rmr.models import Category, Page, UserProfile, Recipe, Rating
 from django.contrib.auth.models import User
 
 
@@ -46,3 +46,16 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('website', 'picture',)
+
+
+class RatingForm(forms.ModelForm):
+    class Meta:
+        model = Rating
+        fields = ('rating',)
+
+
+
+class RecipeForm(forms.ModelForm):
+    class Meta:
+        model = Recipe
+        fields = ('title', 'description', 'image', 'instructions', 'category')

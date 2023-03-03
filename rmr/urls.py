@@ -1,6 +1,7 @@
 from django.urls import path
 from rmr import views
 
+
 app_name = 'rmr'
 
 urlpatterns = [
@@ -13,6 +14,7 @@ urlpatterns = [
     path('login/', views.user_login, name='login'),
     path('restricted/', views.restricted, name='restricted'),
     path('logout/', views.user_logout, name='logout'),
-    path('account/', views.account, name='account'),
+    path('userprofiles/<str:username>/', views.userprofile, name='userprofile'),
+    path('userprofiles/<str:username>/add_recipe/', views.add_recipe, name='add_recipe'),
 
 ]
