@@ -39,7 +39,20 @@ class UserProfile(models.Model):
         return self.user.username
 
 
+class Recipe(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    image = models.ImageField(upload_to='images/',blank=True, null=True)
+    instructions = models.TextField()
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.title
 
 
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    rating = models.IntegerField()
 
-
+    def __str__(self):
+        return f'{self.user.username} rated {self.recipe.title} {self.rating} stars'

@@ -180,3 +180,7 @@ def visitor_cookie_handler(request):
     request.session['visits'] = visits
 
 
+def account(request):
+
+    return render(request, 'rmr/account.html', context={})
+
