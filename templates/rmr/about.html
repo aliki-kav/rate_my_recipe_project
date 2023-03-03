@@ -1,19 +1,19 @@
-{% extends 'rango/base.html' %}
+{% extends 'rmr/base.html' %}
 {% load static %}
 
 {% block title_block %}
-        About Rango
+        About rmr
 {% endblock %}
 
 {% block body_block %}
-        <h1>Rango says...</h1>
+        <h1>rmr says...</h1>
         <div>
             here is the about page.<br />
             This tutorial has been put together by {{ boldmessage }}<br />
             Visits: {{ visits }}<br />
         </div>
         <div>
-            <img src="{% static 'images/rango.jpg' %}" alt="Picture of Rango" />
+            <img src="{% static 'images/rmr.jpg' %}" alt="Picture of rmr" />
             <img src="{{ MEDIA_URL }}cat.jpg" alt="Picture of a Cat." />"
         </div>
 {% endblock %}

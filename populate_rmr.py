@@ -2,10 +2,10 @@ import os
 import random
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE',
-                      'tango_with_django_project.settings')
+                      'rate_my_recipe_project.settings')
 import django
 django.setup()
-from rango.models import Category, Page
+from rmr.models import Category, Page
 
 
 def populate():
@@ -60,5 +60,5 @@ def add_cat(name, views, likes):
 
 
 if __name__ == '__main__':
-    print('Starting Rango population script...')
+    print('Starting rmr population script...')
     populate()

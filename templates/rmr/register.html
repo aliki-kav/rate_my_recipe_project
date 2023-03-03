@@ -1,4 +1,4 @@
-{% extends 'rango/base.html' %}
+{% extends 'rmr/base.html' %}
 {% load static %}
 
 {% block title_block %}
@@ -6,13 +6,13 @@
 {% endblock %}
 
 {% block body_block %}
-        <h1>Register for Rango</h1>
+        <h1>Register for rmr</h1>
         {% if registered %}
-        Rango says: <strong>thank you for registering!</strong>
-        <a href="{% url 'rango:index' %}">Return to the homepage.</a><br />
+        rmr says: <strong>thank you for registering!</strong>
+        <a href="{% url 'rmr:index' %}">Return to the homepage.</a><br />
         {% else %}
-        Rango says: <strong>register here!</strong>
-        <form id="user_form" method="post" action="{% url 'rango:register' %}" enctype="multipart/form-data">
+        rmr says: <strong>register here!</strong>
+        <form id="user_form" method="post" action="{% url 'rmr:register' %}" enctype="multipart/form-data">
           {% csrf_token %}
 
           <!-- Display each form -->

@@ -1,4 +1,4 @@
-"""tango_with_django_project URL Configuration
+"""rate_my_recipe_project URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
@@ -16,12 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include
-from rango import views
+from rmr import views
 from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('rango/', include('rango.urls')),
+    path('rmr/', include('rmr.urls')),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,1 +1,1 @@
-# tango_with_django_project-
+# rate_my_recipe_project-

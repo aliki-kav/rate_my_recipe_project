@@ -1,4 +1,4 @@
-{% extends 'rango/base.html' %}
+{% extends 'rmr/base.html' %}
 {% load static %}
 
 {% block title_block %}
@@ -6,9 +6,9 @@
 {% endblock %}
 
 {% block body_block %}
-        <h1>Login to Rango</h1>
+        <h1>Login to rmr</h1>
 
-        <form id="login_form" method="post" action="{% url 'rango:login' %}">
+        <form id="login_form" method="post" action="{% url 'rmr:login' %}">
           {% csrf_token %}
           Username: <input type="text" name="username" value="" size="50" />
           <br />

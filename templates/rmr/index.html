@@ -1,4 +1,4 @@
-{% extends 'rango/base.html' %}
+{% extends 'rmr/base.html' %}
 {% load static %}
 
 {% block title_block %}
@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body_block %}
-        <h1>Rango says...</h1>
+        <h1>rmr says...</h1>
         <div>
             {% if user.is_authenticated %}
             howdy {{ user.username }}!
@@ -21,7 +21,7 @@
             <h2>Most Liked Categories</h2>
             <ul>
             {% for category in categories %}
-                <li><a href="{% url 'rango:show_category' category.slug %}">{{ category.name }}</a>
+                <li><a href="{% url 'rmr:show_category' category.slug %}">{{ category.name }}</a>
                 </li>
             {% endfor %}
             </ul>
@@ -43,7 +43,7 @@
         {% endif %}
         </div>
         <div>
-            <img src="{% static 'images/rango.jpg' %}"
-                 alt='Picture of Rango' />
+            <img src="{% static 'images/rmr.jpg' %}"
+                 alt='Picture of rmr' />
         </div>
 {% endblock %}

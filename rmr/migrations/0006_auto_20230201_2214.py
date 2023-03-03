@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('rango', '0005_category_slug'),
+        ('rmr', '0005_category_slug'),
     ]
 
     operations = [
