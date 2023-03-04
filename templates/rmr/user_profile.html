@@ -14,10 +14,11 @@
 {% if recipes %}
 {% for recipe in recipes %}
 <div class="recipe">
-    <h3>{{ recipe.title }}</h3>
-
-    <p>{{ recipe.description }}</p>
-    <p>Category: {{ recipe.category.name }}</p>
+    <li>
+        <a href="{% url 'rmr:show_recipe' recipe.category.slug recipe.slug %}">{{ recipe.title }}</a>
+<!--        <p>{{ recipe.description }}</p>-->
+<!--        <p>Category: {{ recipe.category.name }}</p>-->
+    </li>
 
 </div>
 {% endfor %}

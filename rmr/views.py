@@ -200,7 +200,8 @@ def add_recipe(request, username):
             recipe = form.save(commit=False)
             recipe.user = request.user
             recipe.save()
-            return redirect('recipe_detail', pk=recipe.pk)
+            return redirect(reverse('rmr:show_recipe', kwargs={'category_name_slug': recipe.category.slug,
+                                    'recipe_title_slug': recipe.slug}))
     else:
         form = RecipeForm()
     return render(request, 'rmr/add_recipe.html', {'form': form, 'username': username})
