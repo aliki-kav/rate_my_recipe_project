@@ -23,6 +23,7 @@
     <a href="{% url 'rmr:add_recipe' username=request.user.username %}">Add a New Recipe</a><br />
     {% endif %}
     <div>
+        {% if not user.is_anonymous %}
         {% if rating %}
         <div>
             <h3>your rating:</h3>
@@ -45,6 +46,7 @@
       </form>
         {% endif %}
     </div>
+    {% endif %}
     {% else %}
     The specified recipe doesn't exist
     {% endif %}

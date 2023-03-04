@@ -212,9 +212,12 @@ def show_recipe(request, category_name_slug, recipe_title_slug):
     context_dict = {}
     try:
         recipe = Recipe.objects.get(slug=recipe_title_slug)
-        rating = Rating.objects.filter(user=request.user, recipe=recipe).first()
         context_dict['recipe'] = recipe
-        context_dict['rating'] = rating
+        if request.user.is_anonymous:
+            context_dict['rating'] = None
+        else:
+            rating = Rating.objects.filter(user=request.user, recipe=recipe).first()
+            context_dict['rating'] = rating
 
         if request.method == 'POST':
             form = RatingForm(request.POST)
