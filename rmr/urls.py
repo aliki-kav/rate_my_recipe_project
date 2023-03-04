@@ -16,5 +16,7 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
     path('userprofiles/<str:username>/', views.userprofile, name='userprofile'),
     path('userprofiles/<str:username>/add_recipe/', views.add_recipe, name='add_recipe'),
+    path('category/<slug:category_name_slug>/<slug:recipe_title_slug>/',
+         views.show_recipe, name='show_recipe'),
 
 ]

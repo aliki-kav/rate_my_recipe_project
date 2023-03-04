@@ -46,8 +46,14 @@ class Recipe(models.Model):
     image = models.ImageField(upload_to='images/',blank=True, null=True)
     instructions = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    slug = models.SlugField(unique=True)
+
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Recipe, self).save(*args, **kwargs)
 
 
 class Rating(models.Model):
