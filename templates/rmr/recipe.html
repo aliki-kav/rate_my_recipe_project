@@ -22,6 +22,29 @@
     {% if user.is_authenticated %}
     <a href="{% url 'rmr:add_recipe' username=request.user.username %}">Add a New Recipe</a><br />
     {% endif %}
+    <div>
+        {% if rating %}
+        <div>
+            <h3>your rating:</h3>
+            rating: {{ rating.rating }} <br />
+            comment: {{ rating.comment }}
+        </div>
+        {% else %}
+        <h3>Leave your comment</h3>
+        <form id="rating_form" method="post" action="{% url 'rmr:show_recipe' recipe.category.slug recipe.slug %}">
+            {% csrf_token %}
+            {% for hidden in form.hidden_fields %}
+               {{ hidden }}
+            {% endfor %}
+            {% for field in form.visible_fields %}
+                {{ field.errors }}
+                {{ field.help_text }}
+                {{ field }}
+            {% endfor %}
+        <input type="submit" name="submit" value="Create Rating" />
+      </form>
+        {% endif %}
+    </div>
     {% else %}
     The specified recipe doesn't exist
     {% endif %}

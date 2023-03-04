@@ -1,4 +1,6 @@
 from django import forms
+from django.core.validators import MinValueValidator, MaxValueValidator
+
 from rmr.models import Category, Page, UserProfile, Recipe, Rating
 from django.contrib.auth.models import User
 
@@ -49,9 +51,13 @@ class UserProfileForm(forms.ModelForm):
 
 
 class RatingForm(forms.ModelForm):
+    comment = forms.CharField(max_length=1000, help_text="Please enter your comment: ")
+    rating = forms.IntegerField(validators=[MinValueValidator(0),
+                                MaxValueValidator(5)], help_text="Rate the recipe: ")
+
     class Meta:
         model = Rating
-        fields = ('rating',)
+        fields = ('rating', 'comment')
 
 
 class RecipeForm(forms.ModelForm):
@@ -59,3 +65,4 @@ class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
         fields = ('title', 'description', 'image', 'instructions', 'category')
+

@@ -60,6 +60,7 @@ class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     rating = models.IntegerField()
+    comment = models.CharField(max_length=1000, blank=True)
 
     def __str__(self):
         return f'{self.user.username} rated {self.recipe.title} {self.rating} stars'

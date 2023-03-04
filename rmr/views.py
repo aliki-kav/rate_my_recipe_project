@@ -212,7 +212,24 @@ def show_recipe(request, category_name_slug, recipe_title_slug):
     context_dict = {}
     try:
         recipe = Recipe.objects.get(slug=recipe_title_slug)
+        rating = Rating.objects.filter(user=request.user, recipe=recipe).first()
         context_dict['recipe'] = recipe
+        context_dict['rating'] = rating
+
+        if request.method == 'POST':
+            form = RatingForm(request.POST)
+            if form.is_valid():
+                rating = form.save(commit=False)
+                rating.user = request.user
+                rating.recipe = recipe
+                rating.save()
+                return redirect(reverse('rmr:show_recipe', kwargs={'category_name_slug': recipe.category.slug,
+                                                                   'recipe_title_slug': recipe.slug}))
+            else:
+                print(form.errors)
+        else:
+            form = RatingForm()
+        context_dict['form'] = form;
     except Recipe.DoesNotExist:
         context_dict['recipe'] = None
     return render(request, 'rmr/recipe.html', context=context_dict)

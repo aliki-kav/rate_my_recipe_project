@@ -27,6 +27,23 @@
 <p>No recipes uploaded yet.</p>
 {% endif %}
 
+<h2>{{ userprofile.user.username }}'s Ratings:</h2>
+{% if ratings %}
+{% for rating in ratings %}
+<div class="rating">
+    <li>
+        <a href="{% url 'rmr:show_recipe' rating.recipe.category.slug rating.recipe.slug %}">{{ rating.recipe.title }}</a>
+        <p>Your rating: {{ rating.rating }}</p>
+        <p>Your comment: {{ rating.comment }}</p>
+    </li>
+
+</div>
+{% endfor %}
+
+{% else %}
+<p>No ratings left yet.</p>
+{% endif %}
+
 {% if request.user.username == userprofile.user.username %}
 <h2>Add a New Recipe:</h2>
 <form enctype="multipart/form-data" method="post">
