@@ -27,6 +27,7 @@
               <li><a href="{% url 'rmr:restricted' %}">Restricted Page</a></li>
               <li><a href="{% url 'rmr:logout' %}">Logout</a></li>
               <li><a href="{% url 'rmr:add_category' %}">Add a New Category</a></li>
+              <a href="{% url 'rmr:userprofile' username=request.user.username %}">my account</a>
               {% else %}
               <li><a href="{% url 'rmr:register' %}">Sign Up</a></li>
               <li><a href="{% url 'rmr:login' %}">Login</a> </li>
