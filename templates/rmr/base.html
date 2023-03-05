@@ -3,13 +3,40 @@
 {% load rmr_template_tags %}
 <html>
     <head>
+        <link rel="stylesheet"	type="text/css"	href="{% static 'stylesheet.css' %}"/>	
         <title>rmr -
         {% block title_block %}
             How to Tango with Django!
         {% endblock %}
         </title>
+
+          
     </head>
     <body>
+        <div class="navbar">
+            <ul>
+                <li><a  href="{% url 'rmr:index' %}">Home</a></li>
+                <li class="dropdown"><a href="javascript:void(0)" class="dropbtn">Categories</a>
+                <div class="dropdown-content">
+                    <a href="{% url 'rmr:breakfast' %}">Breakfast</a>
+                    <a href="{% url 'rmr:lunch' %}">Lunch</a>
+                    <a href="{% url 'rmr:dinner' %}">Dinner</a>
+                    <a href="{% url 'rmr:dessert' %}">Dessert</a>
+                </div>
+                </li>
+                <li><a href="{% url 'rmr:login' %}">Login</a> </li>
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'rmr:logout' %}">Logout</a></li>
+                <li><a href="{% url 'rmr:add_recipe' %}">Add a New Recipe</a></li>
+                <a href="{% url 'rmr:userprofile' username=request.user.username %}">My account</a>
+                {% else %}
+                <li><a href="{% url 'rmr:register' %}">Sign Up</a></li>
+                
+                {% endif %}
+           
+            </ul>
+        </div>
+
         <div>
         {% block body_block %}
             Default.
@@ -21,6 +48,7 @@
             {% endblock %}
         </div>
         <hr />
+        <!--
         <div>
           <ul>
           {% if user.is_authenticated %}
@@ -36,5 +64,6 @@
               <li><a href="{% url 'rmr:index' %}">Index</a></li>
           </ul>
         </div>
+        -->
     </body>
 </html>

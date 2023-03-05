@@ -159,7 +159,6 @@ def user_logout(request):
 def restricted(request):
     return render(request, 'rmr/restricted.html')
 
-
 def get_server_side_cookie(request, cookie, default_val=None):
     val = request.session.get(cookie)
     if not val:
@@ -236,3 +235,15 @@ def show_recipe(request, category_name_slug, recipe_title_slug):
     except Recipe.DoesNotExist:
         context_dict['recipe'] = None
     return render(request, 'rmr/recipe.html', context=context_dict)
+
+def breakfast(request):
+    return render(request, 'rmr/breakfast.html')
+
+def lunch(request):
+    return render(request, 'rmr/lunch.html')
+    
+def dinner(request):
+    return render(request, 'rmr/dinner.html')
+
+def dessert(request):
+    return render(request, 'rmr/dessert.html')
