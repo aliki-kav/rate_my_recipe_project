@@ -101,6 +101,36 @@ def add_page(request, category_name_slug):
     context_dict = {'form': form, 'category': category}
     return render(request, 'rmr/add_page.html', context=context_dict)
 
+@login_required
+def add_recipe(request, category_name_slug):
+    try:
+        print(category_name_slug)
+        category = Category.objects.get(slug=category_name_slug)
+
+    except Category.DoesNotExist:
+        category = None
+
+    if category is None:
+        print('category is none')
+        return redirect('/rmr/')
+
+    form = PageForm()
+
+    if request.method == 'POST':
+        form = PageForm(request.POST)
+
+        if form.is_valid():
+            page = form.save(commit=False)
+            page.category = category
+            page.views = 0
+            page.save()
+
+            return redirect(reverse('rmr:show_category', kwargs={'category_name_slug': category_name_slug}))
+        else:
+            print(form.errors)
+    context_dict = {'form': form, 'category': category}
+    return render(request, 'rmr/add_recipe.html', context=context_dict)
+
 
 def register(request):
     registered = False

@@ -9,7 +9,7 @@
         <h1>Rate my recipe</h1>
         <div>
             {% if user.is_authenticated %}
-            Hello, add recipe {{ user.username }}!
+            Hello, {{ user.username }}!
             
             {% endif %}
             <p> Browse recipes now!</p>

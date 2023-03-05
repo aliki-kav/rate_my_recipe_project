@@ -7,7 +7,17 @@
 
 {% block body_block %}
     <h1>Dinner Recipes</h1>
-<!--make sure only bfast recipes-->
+<!--make sure only dinner recipes-->
+{% if recipes %}
+    <ul>
+        <p> sth here</p>
+        {% for recipe in recipes %}
+        <li><a href="{% url 'rmr:show_recipe' category.slug recipe.slug %}">{{ recipe.title }}</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <strong>No recipes currently in category.</strong>
+    {% endif %}
     {% for recipe in recipes %}
     <li><a href="{% url 'rmr:show_recipe' category.slug %}">{{ recipe.name }}</a>
         <p>{{ recipe.image }}</p>
