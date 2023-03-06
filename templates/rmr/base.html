@@ -4,23 +4,30 @@
 <html>
     <head>
         <link rel="stylesheet"	type="text/css"	href="{% static 'stylesheet.css' %}"/>	
-        <title>rmr -
+        <title>Rate My Recipe -
         {% block title_block %}
-            How to Tango with Django!
+            Rate my Recipe!
         {% endblock %}
+        
+        
+
         </title>
+        
 
           
     </head>
     <body>
+        
             <div class="navbar">
                 <ul>
                     <li><a  href="{% url 'rmr:index' %}">Home</a></li>
                     <li class="dropdown"><a href="javascript:void(0)" class="dropbtn">Categories</a>
                         <div class="dropdown-content">
                             {% for category in categories %}
-                                <a href="{% url 'rmr:show_category' category.slug %}">{{ category.name }}</a>
-                            {% endfor %}
+                            <a href="{% url 'rmr:show_category' category.slug %}">{{ category.name }}</a>
+                        {% endfor %}
+
+
                         </div>
                     </li>
                    {% if user.is_authenticated %}
@@ -38,18 +45,23 @@
 
                 </ul>
             </div>
+            <div id="logo">
+                <img src="{% static 'images/rmr_logo.png' %}" alt="rmr logo" />
+            </div>
 
 
         <div>
         {% block body_block %}
             Default.
+            
         {% endblock %}
         </div>
-<!--        <div>-->
-<!--            {% block sidebar_block %}-->
-<!--                {% get_category_list category %}-->
-<!--            {% endblock %}-->
-<!--        </div>-->
+        <!-- <div>
+            {% block sidebar_block %}
+                {% get_category_list category %}
+                
+            {% endblock %}
+        </div> -->
         <hr />
         <!--
         <div>

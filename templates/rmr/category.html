@@ -15,7 +15,12 @@
     {% if recipes %}
     <ul>
         {% for recipe in recipes %}
-        <li><a href="{% url 'rmr:show_recipe' category.slug recipe.slug %}">{{ recipe.title }}</a></li>
+        <div class="recipes">
+        <p>{{recipe.title}}</p>
+        <li><a href="{% url 'rmr:show_recipe' category.slug recipe.slug %}">
+            <img src="{{MEDIA_URL}}{{recipe.image}}" /></a></li>
+            <p>{{recipe.description}}</p>
+        </div>
         {% endfor %}
     </ul>
     {% else %}

@@ -1,16 +1,30 @@
-body {
-    background-color:white;
+  body {
+    background-color:#6BB77B;
   }
+
+  p{ font-family: Arial, Helvetica, sans-serif;
+
+  }
+  h1{font-family: Arial, Helvetica, sans-serif;
+
+  }
+  h2{
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
   .navbar ul{
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
     background-color: #38444d;
+
   }
   
   .navbar li {
     float: left;
+    font-family: Arial, Helvetica, sans-serif;
+
   }
   
   .navbar li a, .dropbtn {
@@ -22,7 +36,7 @@ body {
   }
   
   .navbar li a:hover, .dropdown:hover .dropbtn {
-    background-color: red;
+    background-color: #D76F30;
   }
   
   li.dropdown {
@@ -50,4 +64,24 @@ body {
   
   .dropdown:hover .dropdown-content {
     display: block;
+  }
+
+  #logo{
+    position:relative;
+  }
+  #logo img{
+    position: absolute;
+    height:160px;
+    width:160px;
+    top: 10px;
+    right:0px;
+  }
+
+  .recipes img{
+    height:160px;
+    width:160px;
+
+  }
+  .recipes li{
+    list-style-type: none;
   }
