@@ -16,11 +16,11 @@
             <br />
         </div>
         <div>
-        {% if categories %}
+        {% if categories_sorted %}
         <!--change to if recipes, for category in categories etc-->
             <h2>Higest Rated Recipes</h2>
             <ul>
-            {% for category in categories %}
+            {% for category in categories_sorted %}
                 <li><a href="{% url 'rmr:show_category' category.slug %}">{{ category.name }}</a>
                 </li>
             {% endfor %}

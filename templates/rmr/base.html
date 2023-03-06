@@ -18,12 +18,9 @@
                     <li><a  href="{% url 'rmr:index' %}">Home</a></li>
                     <li class="dropdown"><a href="javascript:void(0)" class="dropbtn">Categories</a>
                         <div class="dropdown-content">
-                            <a href="{% url 'rmr:breakfast' %}">Breakfast</a>
-                            <a href="{% url 'rmr:lunch' %}">Lunch</a>
-                            <a href="{% url 'rmr:dinner' %}">Dinner</a>
-                            <a href="{% url 'rmr:dessert' %}">Dessert</a>
-
-
+                            {% for category in categories %}
+                                <a href="{% url 'rmr:show_category' category.slug %}">{{ category.name }}</a>
+                            {% endfor %}
                         </div>
                     </li>
                    {% if user.is_authenticated %}
@@ -48,11 +45,11 @@
             Default.
         {% endblock %}
         </div>
-        <div>
-            {% block sidebar_block %}
-                {% get_category_list category %}
-            {% endblock %}
-        </div>
+<!--        <div>-->
+<!--            {% block sidebar_block %}-->
+<!--                {% get_category_list category %}-->
+<!--            {% endblock %}-->
+<!--        </div>-->
         <hr />
         <!--
         <div>

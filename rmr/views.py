@@ -15,11 +15,13 @@ from django.shortcuts import render, get_object_or_404
 
 
 def index(request):
-    category_list = Category.objects.order_by('-likes')[:5]
+    category_list_sorted = Category.objects.order_by('-likes')[:5]
+    category_list = Category.objects.all()
     page_list = Page.objects.order_by('-views')[:5]
 
     context_dict = {}
     context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
+    context_dict['categories_sorted'] = category_list_sorted
     context_dict['categories'] = category_list
     context_dict['pages'] = page_list
 
@@ -32,8 +34,11 @@ def index(request):
 def about(request):
     visitor_cookie_handler(request)
     visits = request.session['visits']
-    context_dict = {'boldmessage': 'Simone',
-                    'visits': visits}
+    category_list = Category.objects.all()
+    context_dict = {'boldmessage': 'Team8A',
+                    'visits': visits,
+                    'categories': category_list
+                    }
 
     if request.session.test_cookie_worked():
         print("TEST COOKIE WORKED!")
@@ -48,8 +53,10 @@ def show_category(request, category_name_slug):
     try:
         category = Category.objects.get(slug=category_name_slug)
         recipes = Recipe.objects.filter(category=category)
+        category_list = Category.objects.all()
         context_dict['recipes'] = recipes
         context_dict['category'] = category
+        context_dict['categories'] = category_list
     except Category.DoesNotExist:
         context_dict['recipes'] = None
         context_dict['category'] = None
@@ -59,7 +66,7 @@ def show_category(request, category_name_slug):
 @login_required
 def add_category(request):
     form = CategoryForm()
-
+    category_list = Category.objects.all()
     if request.method == 'POST':
         form = CategoryForm(request.POST)
         if form.is_valid():
@@ -68,7 +75,7 @@ def add_category(request):
             return redirect('/rmr/')
         else:
             print(form.errors)
-    return render(request, 'rmr/add_category.html', {'form': form})
+    return render(request, 'rmr/add_category.html', {'form': form, 'categories': category_list})
 
 
 @login_required
@@ -103,6 +110,7 @@ def add_page(request, category_name_slug):
 
 @login_required
 def add_recipe(request, category_name_slug):
+    category_list = Category.objects.all()
     try:
         print(category_name_slug)
         category = Category.objects.get(slug=category_name_slug)
@@ -128,12 +136,13 @@ def add_recipe(request, category_name_slug):
             return redirect(reverse('rmr:show_category', kwargs={'category_name_slug': category_name_slug}))
         else:
             print(form.errors)
-    context_dict = {'form': form, 'category': category}
+    context_dict = {'form': form, 'category': category, 'categories': category_list}
     return render(request, 'rmr/add_recipe.html', context=context_dict)
 
 
 def register(request):
     registered = False
+    category_list = Category.objects.all()
 
     if request.method == 'POST':
         user_form = UserForm(request.POST)
@@ -157,10 +166,12 @@ def register(request):
 
     return render(request, 'rmr/register.html', context={'user_form': user_form,
                                                            'profile_form': profile_form,
-                                                           'registered': registered})
+                                                           'registered': registered,
+                                                         'categories': category_list})
 
 
 def user_login(request):
+    category_list = Category.objects.all()
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -177,7 +188,7 @@ def user_login(request):
             print(f"Invalid login details: {username}, {password}")
             return HttpResponse("Invalid login details supplied.")
     else:
-        return render(request, 'rmr/login.html', context={})
+        return render(request, 'rmr/login.html', context={'categories': category_list})
 
 
 def user_logout(request):
@@ -212,17 +223,22 @@ def visitor_cookie_handler(request):
 
 
 def userprofile(request, username):
+    category_list = Category.objects.all()
     userprofile = get_object_or_404(UserProfile, user__username=username)
     if request.user.username == username:
         ratings = Rating.objects.filter(user=userprofile.user)
         recipes = Recipe.objects.filter(user=userprofile.user)
-        return render(request, 'rmr/user_profile.html', {'userprofile': userprofile, 'ratings': ratings, 'recipes': recipes})
+        return render(request, 'rmr/user_profile.html', {'userprofile': userprofile,
+                                                         'ratings': ratings,
+                                                         'recipes': recipes,
+                                                         'categories': category_list})
     else:
         return render(request, '403.html')
 
 
 def add_recipe(request, username):
     username = request.user.username
+    category_list = Category.objects.all()
     if request.method == 'POST':
         form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
@@ -233,11 +249,11 @@ def add_recipe(request, username):
                                     'recipe_title_slug': recipe.slug}))
     else:
         form = RecipeForm()
-    return render(request, 'rmr/add_recipe.html', {'form': form, 'username': username})
+    return render(request, 'rmr/add_recipe.html', {'form': form, 'username': username, 'categories': category_list})
 
 
 def show_recipe(request, category_name_slug, recipe_title_slug):
-    print(recipe_title_slug)
+    category_list = Category.objects.all()
     context_dict = {}
     try:
         recipe = Recipe.objects.get(slug=recipe_title_slug)
@@ -264,6 +280,7 @@ def show_recipe(request, category_name_slug, recipe_title_slug):
         context_dict['form'] = form;
     except Recipe.DoesNotExist:
         context_dict['recipe'] = None
+    context_dict['categories'] = category_list
     return render(request, 'rmr/recipe.html', context=context_dict)
 
 def breakfast(request):

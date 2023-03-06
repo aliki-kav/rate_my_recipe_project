@@ -51,7 +51,7 @@ class UserProfileForm(forms.ModelForm):
 
 
 class RatingForm(forms.ModelForm):
-    comment = forms.CharField(max_length=1000, help_text="Please enter your comment: ")
+    comment = forms.CharField(max_length=1000, help_text="Please enter your comment: ", required=False)
     rating = forms.IntegerField(validators=[MinValueValidator(0),
                                 MaxValueValidator(5)], help_text="Rate the recipe: ")
 
