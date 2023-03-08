@@ -43,7 +43,7 @@ class Recipe(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     description = models.TextField()
-    image = models.ImageField(upload_to='images/',blank=True, null=True)
+    image = models.ImageField(upload_to='images/', blank=False, null=True)
     instructions = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     slug = models.SlugField(unique=True)
