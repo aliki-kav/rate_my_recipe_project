@@ -13,6 +13,9 @@
     {% if recipe %}
     <div class="container">
         <h1>{{ recipe.title }}</h1>
+        <div class="recipe-stats">
+            views: {{ recipe.views }}
+        </div>
         <div class="row">
             <div class="col-md-6">
                 {% if recipe.image %}

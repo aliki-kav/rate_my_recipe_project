@@ -62,7 +62,8 @@ class RatingForm(forms.ModelForm):
 
 class RecipeForm(forms.ModelForm):
     slug = forms.CharField(widget=forms.HiddenInput(), required=False)
+    views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
     class Meta:
         model = Recipe
-        fields = ('title', 'description', 'image', 'instructions', 'category')
+        fields = ('title', 'description', 'image', 'instructions', 'category', 'views')
 

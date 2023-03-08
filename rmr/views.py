@@ -17,13 +17,13 @@ from django.shortcuts import render, get_object_or_404
 def index(request):
     category_list_sorted = Category.objects.order_by('-likes')[:5]
     category_list = Category.objects.all()
-    page_list = Page.objects.order_by('-views')[:5]
+    recipe_list = Recipe.objects.order_by('-views')[:5]
 
     context_dict = {}
     context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
     context_dict['categories_sorted'] = category_list_sorted
     context_dict['categories'] = category_list
-    context_dict['pages'] = page_list
+    context_dict['recipes'] = recipe_list
 
     visitor_cookie_handler(request)
 
@@ -200,6 +200,7 @@ def user_logout(request):
 def restricted(request):
     return render(request, 'rmr/restricted.html')
 
+
 def get_server_side_cookie(request, cookie, default_val=None):
     val = request.session.get(cookie)
     if not val:
@@ -282,6 +283,22 @@ def show_recipe(request, category_name_slug, recipe_title_slug):
         context_dict['recipe'] = None
     context_dict['categories'] = category_list
     return render(request, 'rmr/recipe.html', context=context_dict)
+
+def goto_url(request):
+    if request.method == 'GET':
+        recipe_id = request.GET.get('recipe_id')
+
+        try:
+            selected_recipe = Recipe.objects.get(id=recipe_id)
+        except Recipe.DoesNotExist:
+            return redirect(reverse('rmr:index'))
+
+        selected_recipe.views = selected_recipe.views + 1
+        selected_recipe.save()
+        return redirect(reverse('rmr:show_recipe', kwargs={'category_name_slug': selected_recipe.category.slug,
+                                                           'recipe_title_slug': selected_recipe.slug}))
+    return redirect(reverse('rmr:index'))
+
 
 def breakfast(request):
     return render(request, 'rmr/breakfast.html')
