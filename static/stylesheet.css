@@ -1,87 +1,27 @@
-  body {
-    background-color:#6BB77B;
-  }
+body {
+  background-color: #e9ecef;
+  margin-bottom: 120px;}
 
-  p{ font-family: Arial, Helvetica, sans-serif;
+.navbar {
+  border-radius: 0;
+}
 
-  }
-  h1{font-family: Arial, Helvetica, sans-serif;
+.navbar-brand {
+  font-weight: normal;
+}
 
-  }
-  h2{
-    font-family: Arial, Helvetica, sans-serif;
-  }
+.dropdown-menu {
+  background-color: #212529;
+}
 
-  .navbar ul{
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #38444d;
+.dropdown-item {
+  color: #fff;
+}
 
-  }
-  
-  .navbar li {
-    float: left;
-    font-family: Arial, Helvetica, sans-serif;
+.dropdown-item:hover {
+  background-color: #e9ecef;
+}
 
-  }
-  
-  .navbar li a, .dropbtn {
-    display: inline-block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-  }
-  
-  .navbar li a:hover, .dropdown:hover .dropbtn {
-    background-color: #D76F30;
-  }
-  
-  li.dropdown {
-    display: inline-block;
-  }
-  
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color:#38444d;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-  }
-  
-  .dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-  }
-  
-  .dropdown-content a:hover {background-color: #f1f1f1;}
-  
-  .dropdown:hover .dropdown-content {
-    display: block;
-  }
-
-  #logo{
-    position:relative;
-  }
-  #logo img{
-    position: absolute;
-    height:160px;
-    width:160px;
-    top: 10px;
-    right:0px;
-  }
-
-  .recipes img{
-    height:160px;
-    width:160px;
-
-  }
-  .recipes li{
-    list-style-type: none;
-  }
+.container {
+  margin-top: 75px;
+}

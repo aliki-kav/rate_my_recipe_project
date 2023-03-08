@@ -11,42 +11,59 @@
 
 {% block body_block %}
     {% if recipe %}
-    <h1>{{ recipe.title }}</h1>
-    {% if recipe.image %}
-    <div>
-        <img src="{{ MEDIA_URL }}{{ recipe.image }}" alt="Picture of the dish." />
-    </div>
-    {% endif %}
-    <p>{{ recipe.description }}</p>
-    <p>{{ recipe.instructions }}</p>
-    {% if user.is_authenticated %}
-    <a href="{% url 'rmr:add_recipe' username=request.user.username %}">Add a New Recipe</a><br />
-    {% endif %}
-    <div>
-        {% if not user.is_anonymous %}
-        {% if rating %}
-        <div>
-            <h3>your rating:</h3>
-            rating: {{ rating.rating }} <br />
-            comment: {{ rating.comment }}
+    <div class="container">
+        <h1>{{ recipe.title }}</h1>
+        <div class="row">
+            <div class="col-md-6">
+                {% if recipe.image %}
+                <div class="mb-3">
+                    <img src="{{ MEDIA_URL }}{{ recipe.image }}" alt="Picture of the dish." class="img-fluid" />
+                </div>
+                {% endif %}
+                <div class="mb-3">
+                    <h3>Description</h3>
+                    <p>{{ recipe.description }}</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <h3>Instructions</h3>
+                    <p>{{ recipe.instructions }}</p>
+                </div>
+                {% if not user.is_anonymous %}
+                <div class="mb-3">
+                    {% if rating %}
+                    <h3>Your rating:</h3>
+                    <p>Rating: {{ rating.rating }} </p>
+                    <p>Comment: {{ rating.comment }}</p>
+                    {% else %}
+                    <h3>Leave your comment</h3>
+                    <form id="rating_form" method="post" action="{% url 'rmr:show_recipe' recipe.category.slug recipe.slug %}">
+                        {% csrf_token %}
+                        {% for hidden in form.hidden_fields %}
+                           {{ hidden }}
+                        {% endfor %}
+                        {% for field in form.visible_fields %}
+                            <div class="form-group">
+                                {{ field.label_tag }}
+                                {{ field }}
+                            </div>
+                            {{ field.errors }}
+                            {{ field.help_text }}
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary">Create Rating</button>
+                    </form>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
         </div>
-        {% else %}
-        <h3>Leave your comment</h3>
-        <form id="rating_form" method="post" action="{% url 'rmr:show_recipe' recipe.category.slug recipe.slug %}">
-            {% csrf_token %}
-            {% for hidden in form.hidden_fields %}
-               {{ hidden }}
-            {% endfor %}
-            {% for field in form.visible_fields %}
-                {{ field.errors }}
-                {{ field.help_text }}
-                {{ field }}
-            {% endfor %}
-        <input type="submit" name="submit" value="Create Rating" />
-      </form>
+        {% if user.is_authenticated %}
+        <div class="mt-3">
+            <a href="{% url 'rmr:add_recipe' username=request.user.username %}" class="btn btn-primary">Add a New Recipe</a>
+        </div>
         {% endif %}
     </div>
-    {% endif %}
     {% else %}
     The specified recipe doesn't exist
     {% endif %}
