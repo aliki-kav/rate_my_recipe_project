@@ -25,7 +25,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'rmr:index' %}">Home <span class="sr-only">(current)</span></a>
                 </li>
@@ -61,6 +61,10 @@
                 </li>
                 {% endif %}
             </ul>
+            <form class="form-inline my-2 my-lg-0" action="{% url 'rmr:search' %}">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
         </div>
     </nav>
 <div class="container">

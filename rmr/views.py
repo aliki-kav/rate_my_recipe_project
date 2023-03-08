@@ -3,6 +3,7 @@ from datetime import datetime
 from django.conf.global_settings import MEDIA_URL
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.urls import reverse
@@ -18,6 +19,11 @@ def index(request):
     category_list_sorted = Category.objects.order_by('-likes')[:5]
     category_list = Category.objects.all()
     recipe_list = Recipe.objects.order_by('-views')[:5]
+    search_recipe = request.GET.get('search')
+
+    if search_recipe:
+        request.session['keyword'] = search_recipe
+        return redirect(reverse('rmr:search'))
 
     context_dict = {}
     context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
@@ -60,6 +66,14 @@ def show_category(request, category_name_slug):
     except Category.DoesNotExist:
         context_dict['recipes'] = None
         context_dict['category'] = None
+
+    if request.method == 'POST':
+        if request.method == 'POST':
+            query = request.POST['query'].strip()
+
+            if query:
+                context_dict['result_list'] = run_query(query)
+
     return render(request, 'rmr/category.html', context=context_dict)
 
 
@@ -284,6 +298,7 @@ def show_recipe(request, category_name_slug, recipe_title_slug):
     context_dict['categories'] = category_list
     return render(request, 'rmr/recipe.html', context=context_dict)
 
+
 def goto_url(request):
     if request.method == 'GET':
         recipe_id = request.GET.get('recipe_id')
@@ -299,6 +314,15 @@ def goto_url(request):
                                                            'recipe_title_slug': selected_recipe.slug}))
     return redirect(reverse('rmr:index'))
 
+
+def search(request):
+    keyword = request.GET.get('search', '')
+    category_list = Category.objects.all()
+    recipe_list = Recipe.objects.filter(Q(title__icontains=keyword) | Q(description__icontains=keyword))
+    context_dict = {'categories': category_list,
+                    'recipes': recipe_list,
+                    'keyword': keyword}
+    return render(request, 'rmr/search.html', context=context_dict)
 
 def breakfast(request):
     return render(request, 'rmr/breakfast.html')
