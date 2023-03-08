@@ -16,7 +16,7 @@
 <div class="row">
     {% for recipe in recipes %}
     <div class="col-md-6 mb-4">
-        <a href="{% url 'rmr:show_recipe' category.slug recipe.slug %}">
+        <a href="{% url 'rmr:goto' %}?recipe_id={{ recipe.id }}">{{ recipe.title }}</a>
             <div class="card">
                 <img src="{{MEDIA_URL}}{{recipe.image}}" class="card-img-top" alt="{{recipe.title}}"  width="300" height="400">
                 <div class="card-body">
