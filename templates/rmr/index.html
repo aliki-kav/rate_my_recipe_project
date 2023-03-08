@@ -32,12 +32,11 @@
         
         <div>
         <!-- sort by views -->
-        
             <h2>Popular Recipes</h2>
             {% if recipes %}
             <ul>
             {% for recipe in recipes %}
-                <li><a href="{{ recipe.title }}">{{ recipe.image }}</a>
+                <li><a href="{% url 'rmr:goto' %}?recipe_id={{ recipe.id }}">{{ recipe.title }}</a>
                 </li>
             {% endfor %}
             </ul>

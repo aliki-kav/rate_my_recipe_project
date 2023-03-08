@@ -47,6 +47,7 @@ class Recipe(models.Model):
     instructions = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     slug = models.SlugField(unique=True)
+    views = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
