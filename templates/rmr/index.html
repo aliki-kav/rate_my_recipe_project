@@ -1,49 +1,55 @@
 {% extends 'rmr/base.html' %}
 {% load static %}
 
+{% block head_block %}
+<link rel="stylesheet" type="text/css" href="{% static 'homepage.css' %}">
+{% endblock %}
+
 {% block title_block %}
     Homepage
 {% endblock %}
 
 {% block body_block %}
-        <h1>Rate my recipe</h1>
-        <div>
-            {% if user.is_authenticated %}
-           <p>Hello, {{ user.username }}! </p> 
-            
-            {% endif %}
-            <p> Browse recipes now!</p>
-            <br />
-        </div>
-        <div>
-        {% if categories_sorted %}
-        <!-- change to if recipes, for category in categories etc -->
-            <h2>Higest Rated Recipes</h2>
-            <ul>
-            {% for category in categories_sorted %}
-                <li><a href="{% url 'rmr:show_category' category.slug %}">{{ category.name }}</a>
-                </li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <strong>There are no recipes present.</strong>
+    <div class="container">
+        <h1 class="text-center my-5">Rate my recipe</h1>
+        {% if user.is_authenticated %}
+        <p class="text-center mb-5">Hello, {{ user.username }}!</p>
         {% endif %}
-        </div> 
-        
-        <div>
-        <!-- sort by views -->
-        
-            <h2>Popular Recipes</h2>
-            {% if recipes %}
-            <ul>
-            {% for recipe in recipes %}
-                <li><a href="{{ recipe.title }}">{{ recipe.image }}</a>
-                </li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <strong>There are no pages present.</strong>
-        {% endif %}
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card mb-5">
+                    <div class="card-header">
+                        <h2 class="card-title">Categories</h2>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        {% for category in categories %}
+                            <li class="list-group-item">
+                                <a href="{% url 'rmr:show_category' category.slug %}">{{ category.name }}</a>
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item">There are no categories present.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-5">
+                    <div class="card-header">
+                        <h2 class="card-title">Popular Recipes</h2>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        {% if recipes %}
+                            {% for recipe in recipes %}
+                                <li class="list-group-item">
+                                    <a href="{{ recipe.title }}">{{ recipe.image }}</a>
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                            <li class="list-group-item">There are no recipes present.</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
         </div>
-      
+    </div>
 {% endblock %}
