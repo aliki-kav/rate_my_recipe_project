@@ -9,32 +9,45 @@
     {% endif %}
 {% endblock %}
 
+{% block head_block %}
+    <link rel="stylesheet" href="{% static 'category.css' %}">
+{% endblock %}
+
 {% block body_block %}
 {% if category %}
-<h1>{{ category.name }}</h1>
-{% if recipes %}
-<div class="row">
-    {% for recipe in recipes %}
-    <div class="col-md-6 mb-4">
-        <a href="{% url 'rmr:goto' %}?recipe_id={{ recipe.id }}">{{ recipe.title }}</a>
-            <div class="card">
-                <img src="{{MEDIA_URL}}{{recipe.image}}" class="card-img-top" alt="{{recipe.title}}"  width="300" height="400">
-                <div class="card-body">
-                    <h5 class="card-title">{{recipe.title}}</h5>
-                    <p class="card-text">{{recipe.description}}</p>
+    <div class="container my-5">
+        <h1>{{ category.name }}</h1>
+        <div class="row">
+        {% if recipes %}
+            {% for recipe in recipes %}
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <a href="{% url 'rmr:goto' %}?recipe_id={{ recipe.id }}">
+                        <img src="{{MEDIA_URL}}{{recipe.image}}" class="card-img-top" alt="{{recipe.title}}" width="300" height="400">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{recipe.title}}</h5>
+                        <p class="card-text">{{recipe.description}}</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Views: {{ recipe.views }}</small>
+                    </div>
                 </div>
             </div>
-        </a>
+            {% endfor %}
+        {% else %}
+            <div class="col-md-12">
+                <p>No recipes currently in this category.</p>
+            </div>
+        {% endif %}
+        </div>
+        {% if user.is_authenticated %}
+        <a href="{% url 'rmr:add_recipe' username=request.user.username %}" class="btn btn-primary">Add a New Recipe</a>
+        {% endif %}
     </div>
-    {% endfor %}
-</div>
 {% else %}
-    <strong>No recipes currently in category.</strong>
-{% endif %}
-{% if user.is_authenticated %}
-    <a href="{% url 'rmr:add_recipe' username=request.user.username %}">Add a New recipe</a><br/>
-{% endif %}
-{% else %}
-    The specified category does not exist
+    <div class="container my-5">
+        <p>The specified category does not exist.</p>
+    </div>
 {% endif %}
 {% endblock %}

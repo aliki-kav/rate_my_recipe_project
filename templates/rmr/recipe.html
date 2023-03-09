@@ -9,32 +9,43 @@
     {% endif %}
 {% endblock %}
 
+{% block head_block %}
+    <link rel="stylesheet" type="text/css" href="{% static 'recipe.css' %}">
+{% endblock %}
+
 {% block body_block %}
     {% if recipe %}
-    <div class="container">
-        <h1>{{ recipe.title }}</h1>
-        <div class="recipe-stats">
-            views: {{ recipe.views }}
+    <div class="container my-5">
+        <div class="row recipe-header mb-4">
+            <div class="col-md-8">
+                <h1 class="mb-0">{{ recipe.title }}</h1>
+                <p class="recipe-stats mb-0">Views: {{ recipe.views }}</p>
+            </div>
+            <div class="col-md-4 text-right">
+                {% if user.is_authenticated %}
+                <a href="{% url 'rmr:add_recipe' username=request.user.username %}" class="btn btn-primary">Add a New Recipe</a>
+                {% endif %}
+            </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 {% if recipe.image %}
-                <div class="mb-3">
+                <div class="recipe-image mb-4">
                     <img src="{{ MEDIA_URL }}{{ recipe.image }}" alt="Picture of the dish." class="img-fluid" />
                 </div>
                 {% endif %}
-                <div class="mb-3">
+                <div class="recipe-description mb-4">
                     <h3>Description</h3>
                     <p>{{ recipe.description }}</p>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="mb-3">
+            <div class="col-md-7">
+                <div class="recipe-instructions mb-4">
                     <h3>Instructions</h3>
                     <p>{{ recipe.instructions }}</p>
                 </div>
                 {% if not user.is_anonymous %}
-                <div class="mb-3">
+                <div class="recipe-rating">
                     {% if rating %}
                     <h3>Your rating:</h3>
                     <p>Rating: {{ rating.rating }} </p>
@@ -61,11 +72,11 @@
                 {% endif %}
             </div>
         </div>
-        {% if user.is_authenticated %}
-        <div class="mt-3">
-            <a href="{% url 'rmr:add_recipe' username=request.user.username %}" class="btn btn-primary">Add a New Recipe</a>
+        <div class="row">
+            <div class="col-md-12">
+                <a href="{% url 'rmr:show_category' recipe.category.slug %}" class="recipe-category-link">View All Recipes in {{ recipe.category.name }}</a>
+            </div>
         </div>
-        {% endif %}
     </div>
     {% else %}
     The specified recipe doesn't exist

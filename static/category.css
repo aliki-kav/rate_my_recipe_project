@@ -1,0 +1,18 @@
+.card-img-top {
+  height: 350px;
+  object-fit: cover;
+}
+
+.card-footer {
+  background-color: #f5f3f4;
+}
+
+.btn-primary {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-primary:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
