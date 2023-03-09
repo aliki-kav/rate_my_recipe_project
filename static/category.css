@@ -16,3 +16,9 @@
   background-color: #218838;
   border-color: #1e7e34;
 }
+
+.card:hover {
+  transform: scale(1.02);
+  transition: all 0.1s ease-in-out;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+}
