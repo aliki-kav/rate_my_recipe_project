@@ -51,13 +51,19 @@ class UserProfileForm(forms.ModelForm):
 
 
 class RatingForm(forms.ModelForm):
-    comment = forms.CharField(max_length=1000, help_text="Please enter your comment: ", required=False)
-    rating = forms.IntegerField(validators=[MinValueValidator(0),
-                                MaxValueValidator(5)], help_text="Rate the recipe: ")
+    comment = forms.CharField(widget=forms.Textarea(attrs={
+        'cols': 200,
+        'rows': 3,
+        'style': 'width: 100%',
+        'required': False,
+        'placeholder': "Comment...",}), label="")
+    rating = forms.ChoiceField(choices=[[5, "5"], [4, "4"], [3, "3"], [2, "2"], [1, "1"]])
 
     class Meta:
         model = Rating
         fields = ('rating', 'comment')
+
+
 
 
 class RecipeForm(forms.ModelForm):

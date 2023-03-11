@@ -45,41 +45,76 @@
                         <p>{{ recipe.description }}</p>
                     </div>
                 </div>
-                <div class="col-md-7">
-                    <div class="recipe-instructions mb-4">
-                        <h3>Instructions</h3>
-                        <p>{{ recipe.instructions }}</p>
-                    </div>
-                    {% if not user.is_anonymous %}
-                    <div class="recipe-rating">
-                        {% if rating %}
-                        <h3>Your rating:</h3>
-                        <p>Rating: {{ rating.rating }} </p>
-                        <p>Comment: {{ rating.comment }}</p>
-                        {% else %}
-                        <h3>Leave your comment</h3>
-                        <form id="rating_form" method="post" action="{% url 'rmr:show_recipe' recipe.category.slug recipe.slug %}">
-                            {% csrf_token %}
-                            {% for hidden in form.hidden_fields %}
-                            {{ hidden }}
-                            {% endfor %}
-                            {% for field in form.visible_fields %}
-                                <div class="form-group">
-                                    {{ field.label_tag }}
-                                    {{ field }}
-                                </div>
-                                {{ field.errors }}
-                                {{ field.help_text }}
-                            {% endfor %}
-                            <button type="submit" class="btn btn-primary">Create Rating</button>
-                        </form>
-                        {% endif %}
-                    </div>
-                    {% endif %}
-                    
-                </div>
+
             </div>
         </div>
+        <div class="row">
+            <div class="recipe-rating col-md-5">
+                <h3>Ratings</h3>
+                {% if comments %}
+                <div class="container-fluid" id="ratings">
+                    <div class="row">
+<!--                        <div class="col-md-3">-->
+<!--                        <nav id="ratings-nav" class="navbar fixed-left navbar-light bg-light nav-pills flex-column">-->
+<!--                            <a class="nav-link" href="#comment-5">5</a>-->
+<!--                            <a class="nav-link" href="#comment-4">4</a>-->
+<!--                            <a class="nav-link" href="#comment-3">3</a>-->
+<!--                            <a class="nav-link" href="#comment-2">2</a>-->
+<!--                            <a class="nav-link" href="#comment-1">1</a>-->
+<!--                        </nav>-->
+<!--                </div>-->
+                <div class="col-md-12">
+                <div data-spy="scroll" data-target="#ratings-nav" data-offset="0" class="ratings">
+                    {% for comment in comments %}
+                    <div class="comment-block">
+                        <p id="comment-{{ comment.rating }}">{{ comment.user }}: <br/>
+                            rating: {{ comment.rating }} <br/>
+                            comment: {{ comment.comment }} <br/>
+                        </p>
+                    </div>
+                    {% endfor %}
+                </div>
+                </div>
+                </div>
+                </div>
+                {% else %}
+                <p>No ratings for this recipe yet</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5">
+                {% if user.is_anonymous %}
+                <p>Log in to rate recipes!</p>
+                {% else %}
+                {% if user_rating %}
+                    <h3>Your rating:</h3>
+                    <p>Rating: {{ user_rating.rating }} </p>
+                    <p>Comment: {{ user_rating.comment }}</p>
+                {% else %}
+                    <h3>Rate this recipe</h3>
+                    <form id="rating_form" method="post" action="{% url 'rmr:show_recipe' recipe.category.slug recipe.slug %}">
+                        {% csrf_token %}
+                        {% for hidden in form.hidden_fields %}
+                           {{ hidden }}
+                        {% endfor %}
+                        <div class="form-group mt-4 mb-2">
+                        {% for field in form.visible_fields %}
+                                {{ field.label_tag }}
+                                {{ field }}
+                            {{ field.errors }}
+                            {{ field.help_text }}
+                        {% endfor %}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create Rating</button>
+                    </form>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+</div>
+
         <div class="row">
             <div class="col-md-12">
                 <a href="{% url 'rmr:show_category' recipe.category.slug %}" class="recipe-category-link">View All Recipes in {{ recipe.category.name }}</a>
