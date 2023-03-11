@@ -11,11 +11,14 @@
 
 {% block head_block %}
     <link rel="stylesheet" type="text/css" href="{% static 'recipe.css' %}">
+    <script src="{% static 'pdfconverter.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js" integrity="sha512-w3u9q/DeneCSwUDjhiMNibTRh/1i/gScBVp2imNVAMCt6cUHIw6xzhzcPFIaL3Q1EbI2l+nu17q2aLJJLo4ZYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
+
 
 {% endblock %}
 
 {% block body_block %}
+
     {% if recipe %}
     <div class="container my-5">
         <div id="html2pdf">
@@ -24,7 +27,7 @@
                     <h1 class="mb-0">{{ recipe.title }}</h1>
                     <p class="recipe-stats mb-0">Views: {{ recipe.views }}</p>
                     <div>
-                        <button id="pdf">Download PDF</button>
+                        <button id="pdf" onclick="myFunction()">Download PDF</button>
                     </div>
                 </div>
                 <div class="col-md-4 text-right">
@@ -86,6 +89,7 @@
             </div>
         </div>
     </div>
+    
     {% else %}
     The specified recipe doesn't exist
     {% endif %}

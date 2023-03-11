@@ -26,13 +26,18 @@
         <div class="row">
             <div class="col-lg-6">
                 <h2 class="mb-5">Browse by category</h2>
-                <ul class="list-group">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Categories</h3>
+                    </div>
+                <ul class="list-group list-group-flush">
                     {% for category in categories_sorted %}
                         <li class="list-group-item">
                             <a href="{% url 'rmr:show_category' category.slug %}">{{ category.name }}</a>
                         </li>
                     {% endfor %}
                 </ul>
+            </div>
             </div>
             <div class="col-lg-6">
                 <h2 class="mb-5">Popular Recipes</h2>
