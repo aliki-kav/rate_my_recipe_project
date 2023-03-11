@@ -3,7 +3,10 @@
 
 {% block title_block %}
 {{ userprofile.user.username }}'s Profile
+
 {% endblock %}
+
+
 
 {% block body_block %}
 <h1>{{ userprofile.user.username }}'s Profile</h1>
@@ -13,11 +16,14 @@
 
 {% if recipes %}
 {% for recipe in recipes %}
+{% if recipe.views > 1000 %}
+        <script> alert("Congratulations! One of your recipes has over 1000 views!")</script>
+{% endif %}
+
 <div class="recipe">
     <li>
         <a href="{% url 'rmr:show_recipe' recipe.category.slug recipe.slug %}">{{ recipe.title }}</a>
-<!--        <p>{{ recipe.description }}</p>-->
-<!--        <p>Category: {{ recipe.category.name }}</p>-->
+
     </li>
 
 </div>
