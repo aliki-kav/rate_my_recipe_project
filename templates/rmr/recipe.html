@@ -33,7 +33,7 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="row">
+            <div class="row justify-content-between">
                 <div class="col-md-5">
                     {% if recipe.image %}
                     <div class="recipe-image mb-4">
@@ -45,7 +45,11 @@
                         <p>{{ recipe.description }}</p>
                     </div>
                 </div>
-
+                <div class="col-md-6">
+                     <div class="recipe-instructions mb-4">
+                         <h3>Instructions</h3>
+                         <p>{{ recipe.instructions }}</p>
+                     </div>
             </div>
         </div>
         <div class="row">
