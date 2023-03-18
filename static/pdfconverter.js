@@ -4,15 +4,20 @@ $j(document).ready(function() {
             url: "/rmr/get_recipe_data/" + recipe_id + "/",
             type: "GET",
             success: function(data) {
-                // console.log(data);
 
                 var recipeTitle = data.title;
                 var recipeDescription = data.description;
                 var recipeInstructions = data.instructions;
                 var pdf = new jspdf.jsPDF();
-                pdf.text(30, 20, recipeTitle);
-                pdf.text(20, 30, recipeDescription);
-                pdf.text(20, 40, recipeInstructions);
+                //want to make pdf text bigger
+                pdf.setFontSize(30);
+                //want to center the text
+
+                pdf.text(50, 20, recipeTitle);
+                pdf.setFontSize(12);
+
+                pdf.text(10, 60, "Description: "+recipeDescription);
+                pdf.text(10, 80, "Instruction: "+recipeInstructions);
                 pdf.save(recipeTitle + ".pdf");
             },
             error: function(jqXHR, textStatus, errorThrown) {
