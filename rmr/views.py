@@ -7,7 +7,8 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
-from rmr.models import Category, Page, Rating, UserProfile, Recipe, User
+from django.db.models import Avg, Sum
+from rmr.models import Category, Page, Rating, UserProfile, Recipe
 from rmr.forms import CategoryForm, PageForm, UserForm, UserProfileForm,RecipeForm,RatingForm
 from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404
@@ -137,12 +138,12 @@ def register(request):
 
             profile = profile_form.save(commit=False)
             profile.user = user
+            if 'picture' in request.FILES:
+                profile.picture = request.FILES['picture']
             profile.save()
             registered = True
-
-            return JsonResponse({'success': True})
         else:
-            return JsonResponse({'success': False})
+            print(user_form.errors, profile_form.errors)
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
@@ -212,9 +213,12 @@ def userprofile(request, username):
     if request.user.username == username:
         ratings = Rating.objects.filter(user=userprofile.user)
         recipes = Recipe.objects.filter(user=userprofile.user)
+        if recipes:
+            max_views = recipes.aggregate(Sum('views'))['views__sum']
         return render(request, 'rmr/user_profile.html', {'userprofile': userprofile,
                                                          'ratings': ratings,
                                                          'recipes': recipes,
+                                                         'max_views': max_views,
                                                          'categories': category_list})
     else:
         return render(request, '403.html')
@@ -224,18 +228,13 @@ def add_recipe(request, username):
     username = request.user.username
     category_list = Category.objects.all()
     if request.method == 'POST':
-        print("Form submitted")
         form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
-            print("Form is valid")
             recipe = form.save(commit=False)
             recipe.user = request.user
             recipe.save()
             return redirect(reverse('rmr:show_recipe', kwargs={'category_name_slug': recipe.category.slug,
                                     'recipe_title_slug': recipe.slug}))
-        else:
-            print("Form is not valid")
-            print(form.errors)
     else:
         form = RecipeForm()
     return render(request, 'rmr/add_recipe.html', {'form': form, 'username': username, 'categories': category_list})
@@ -247,7 +246,14 @@ def show_recipe(request, category_name_slug, recipe_title_slug):
     try:
         recipe = Recipe.objects.get(slug=recipe_title_slug)
         context_dict['recipe'] = recipe
-        context_dict['comments'] = Rating.objects.filter(recipe=recipe).order_by('-rating')
+        ratings = Rating.objects.filter(recipe=recipe).order_by('-rating')
+        if ratings:
+            context_dict['average'] = ratings.aggregate(Avg('rating'))['rating__avg']
+            context_dict['width'] = int(float(context_dict['average'])/5*100)
+        else:
+            context_dict['average'] = 0
+            context_dict['width'] = 0
+        context_dict['comments'] = ratings
         if request.user.is_anonymous:
             context_dict['user_rating'] = None
         else:
@@ -255,19 +261,12 @@ def show_recipe(request, category_name_slug, recipe_title_slug):
             context_dict['user_rating'] = rating
 
         if request.method == 'POST':
-            form = RatingForm(request.POST)
-            if form.is_valid():
-                rating = form.save(commit=False)
-                rating.user = request.user
-                rating.recipe = recipe
-                rating.save()
-                return redirect(reverse('rmr:show_recipe', kwargs={'category_name_slug': recipe.category.slug,
-                                                                   'recipe_title_slug': recipe.slug}))
-            else:
-                print(form.errors)
-        else:
-            form = RatingForm()
-        context_dict['form'] = form;
+            rating_value = request.POST.get('rating', None)
+            rating_comment = request.POST.get('comment', None)
+            raing_obj = Rating(recipe=recipe,user=request.user,rating=rating_value, comment=rating_comment)
+            raing_obj.save()
+            return redirect(reverse('rmr:show_recipe', kwargs={'category_name_slug': recipe.category.slug,
+                                                               'recipe_title_slug': recipe.slug}))
     except Recipe.DoesNotExist:
         context_dict['recipe'] = None
     context_dict['categories'] = category_list

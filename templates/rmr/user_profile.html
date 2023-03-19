@@ -9,6 +9,18 @@
 
 
 {% block body_block %}
+{% if max_views %}
+        <div class="toast" id="myToast" data-delay="10000"  style="position: absolute; top: 1; right: 0; z-index:1;">
+        <div class="toast-header">
+            <strong class="mr-auto toast-placeholder"><i class="fa fa-grav"></i> Good job pal! </strong>
+            <small>Just now</small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+        </div>
+        <div class="toast-body toast-placeholder">
+            Your recipes have been viewed {{ max_views }} times!</a>
+        </div>
+    </div>
+{% endif %}
 <h1>{{ userprofile.user.username }}'s Profile</h1>
 <p>Email: {{ userprofile.user.email }}</p>
 <h2>{{ userprofile.user.username }}'s Uploaded Recipes:</h2>

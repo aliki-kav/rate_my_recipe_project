@@ -15,9 +15,12 @@ class CategoryAdmin(admin.ModelAdmin):
 class RecipeAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
 
+class RatingAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'rating_stars': ('rating',)}
+
 
 admin.site.register(Page, PageAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(UserProfile)
 admin.site.register(Recipe, RecipeAdmin)
-admin.site.register(Rating)
+admin.site.register(Rating, RatingAdmin)
