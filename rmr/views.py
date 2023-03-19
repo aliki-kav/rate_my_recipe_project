@@ -5,12 +5,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
-from rmr.models import UserProfile
-from rmr.models import Recipe
-from rmr.models import Category, Page,Rating
 from django.db.models import Avg, Sum
+from rmr.models import Category, Page, Rating, UserProfile, Recipe
 from rmr.forms import CategoryForm, PageForm, UserForm, UserProfileForm,RecipeForm,RatingForm
 from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404
@@ -123,36 +121,7 @@ def add_page(request, category_name_slug):
     context_dict = {'form': form, 'category': category}
     return render(request, 'rmr/add_page.html', context=context_dict)
 
-@login_required
-def add_recipe(request, category_name_slug):
-    category_list = Category.objects.all()
-    try:
-        print(category_name_slug)
-        category = Category.objects.get(slug=category_name_slug)
 
-    except Category.DoesNotExist:
-        category = None
-
-    if category is None:
-        print('category is none')
-        return redirect('/rmr/')
-
-    form = PageForm()
-
-    if request.method == 'POST':
-        form = PageForm(request.POST)
-
-        if form.is_valid():
-            page = form.save(commit=False)
-            page.category = category
-            page.views = 0
-            page.save()
-
-            return redirect(reverse('rmr:show_category', kwargs={'category_name_slug': category_name_slug}))
-        else:
-            print(form.errors)
-    context_dict = {'form': form, 'category': category, 'categories': category_list}
-    return render(request, 'rmr/add_recipe.html', context=context_dict)
 
 
 def register(request):
@@ -254,7 +223,7 @@ def userprofile(request, username):
     else:
         return render(request, '403.html')
 
-
+@login_required
 def add_recipe(request, username):
     username = request.user.username
     category_list = Category.objects.all()
@@ -320,6 +289,21 @@ def goto_url(request):
     return redirect(reverse('rmr:index'))
 
 
+def get_recipe_data(request, recipe_id):
+    try:
+        recipe = Recipe.objects.get(id=recipe_id)
+    except Recipe.DoesNotExist:
+        return JsonResponse({'error': 'Recipe not found'}, status=404)
+
+    data = {
+        'title': recipe.title,
+        'description': recipe.description,
+        'instructions': recipe.instructions,
+    }
+
+    return JsonResponse(data)
+
+
 def search(request):
     keyword = request.GET.get('search', '')
     category_list = Category.objects.all()
@@ -329,14 +313,4 @@ def search(request):
                     'keyword': keyword}
     return render(request, 'rmr/search.html', context=context_dict)
 
-def breakfast(request):
-    return render(request, 'rmr/breakfast.html')
 
-def lunch(request):
-    return render(request, 'rmr/lunch.html')
-    
-def dinner(request):
-    return render(request, 'rmr/dinner.html')
-
-def dessert(request):
-    return render(request, 'rmr/dessert.html')
