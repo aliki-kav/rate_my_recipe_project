@@ -5,28 +5,8 @@
         Login
 {% endblock %}
 
-{% block extra_css %}
-<style>
-  .gradient-custom-1 {
-    background: #91eae4;
-    background: -webkit-linear-gradient(to right, rgba(145, 234, 228, 0.6), rgba(255, 177, 141, 0.6));
-    background: linear-gradient(to right, rgba(145, 234, 228, 0.6), rgba(255, 177, 141, 0.6));
-  }
-
-  .gradient-custom-2 {
-    background: #91eae4;
-    background: -webkit-linear-gradient(to right, rgba(145, 234, 228, 1), rgba(255, 177, 141, 1));
-    background: linear-gradient(to right, rgba(145, 234, 228, 1), rgba(255, 177, 141, 1));
-  }
-
-  .hover-box {
-    transition: transform 0.3s;
-  }
-
-  .hover-box:hover {
-    transform: translateY(-10px);
-  }
-</style>
+{% block head_block %}
+        <link rel="stylesheet" type="text/css" href="{% static 'register.css' %}">
 {% endblock %}
 
 {% block body_block %}

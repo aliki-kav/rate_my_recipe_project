@@ -1,0 +1,8 @@
+
+  .hover-box {
+    transition: transform 0.3s;
+  }
+
+  .hover-box:hover {
+    transform: translateY(-10px);
+  }
