@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
-from rmr.models import Category, Page, Rating, UserProfile, Recipe
+from rmr.models import Category, Page, Rating, UserProfile, Recipe, User
 from rmr.forms import CategoryForm, PageForm, UserForm, UserProfileForm,RecipeForm,RatingForm
 from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404
@@ -137,12 +137,12 @@ def register(request):
 
             profile = profile_form.save(commit=False)
             profile.user = user
-            if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
             profile.save()
             registered = True
+
+            return JsonResponse({'success': True})
         else:
-            print(user_form.errors, profile_form.errors)
+            return JsonResponse({'success': False})
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
@@ -224,13 +224,18 @@ def add_recipe(request, username):
     username = request.user.username
     category_list = Category.objects.all()
     if request.method == 'POST':
+        print("Form submitted")
         form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
+            print("Form is valid")
             recipe = form.save(commit=False)
             recipe.user = request.user
             recipe.save()
             return redirect(reverse('rmr:show_recipe', kwargs={'category_name_slug': recipe.category.slug,
                                     'recipe_title_slug': recipe.slug}))
+        else:
+            print("Form is not valid")
+            print(form.errors)
     else:
         form = RecipeForm()
     return render(request, 'rmr/add_recipe.html', {'form': form, 'username': username, 'categories': category_list})

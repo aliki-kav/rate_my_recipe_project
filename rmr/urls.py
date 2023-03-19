@@ -12,7 +12,6 @@ urlpatterns = [
     path('category/<category_name_slug>/add_page/', views.add_page, name='add_page'),
     path('register/', views.register, name='register'),
     path('login/', views.user_login, name='login'),
-    path('add_recipe/', views.add_recipe, name='add_recipe'),
     path('logout/', views.user_logout, name='logout'),
     path('userprofiles/<str:username>/', views.userprofile, name='userprofile'),
     path('userprofiles/<str:username>/add_recipe/', views.add_recipe, name='add_recipe'),

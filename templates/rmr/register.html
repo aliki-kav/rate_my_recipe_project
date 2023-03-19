@@ -5,8 +5,40 @@
         Register
 {% endblock %}
 
-{% block head_block %}
-        <link rel="stylesheet" type="text/css" href="{% static 'register.css' %}">
+{% block head_block %}#
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"  ></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+<script>
+ $(document).ready(function () {
+  const registerForm = $('#register-form');
+
+  registerForm.on('submit', async function (event) {
+    event.preventDefault();
+    const response = await fetch('{% url "rmr:register" %}', {
+      method: 'POST',
+      body: new FormData(registerForm[0]),
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}',
+      },
+    });
+    const data = await response.json();
+    if (data.success) {
+      alert('Registration successful!');
+      window.location.href = '{% url "rmr:login" %}';
+    } else {
+      alert('Registration unsuccessful, email or user are already in use. Please try again.');
+    }
+  });
+});
+
+</script>
+
+
 {% endblock %}
 
 
@@ -20,7 +52,7 @@
             <div class="card-body p-5">
               <h2 class="text-uppercase text-center mb-5">Join RMR</h2>
 
-              <form method="post" action="{% url 'rmr:register' %}" enctype="multipart/form-data">
+              <form id="register-form" method="post" action="{% url 'rmr:register' %}" enctype="multipart/form-data">
                 {% csrf_token %}
 
                 <div class="form-outline mb-4">
@@ -41,7 +73,7 @@
 
 
                 <div class="d-flex justify-content-center">
-                  <input type="submit" name="submit" value="Register" class="btn btn-primary btn-block btn-lg gradient-custom-2 text-body" />
+                  <input type="submit" id="register-button" name="submit" value="Register" class="btn btn-primary btn-block btn-lg gradient-custom-2 text-body" />
                 </div>
 
                 <p class="text-center text-muted mt-5 mb-0">Already have an account? <a href="{% url 'rmr:login' %}" class="fw-bold text-body"><u>Log in here</u></a></p>
