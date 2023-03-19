@@ -5,15 +5,66 @@
         Login
 {% endblock %}
 
-{% block body_block %}
-        <h1>Login to rmr</h1>
+{% block extra_css %}
+<style>
+  .gradient-custom-1 {
+    background: #91eae4;
+    background: -webkit-linear-gradient(to right, rgba(145, 234, 228, 0.6), rgba(255, 177, 141, 0.6));
+    background: linear-gradient(to right, rgba(145, 234, 228, 0.6), rgba(255, 177, 141, 0.6));
+  }
 
-        <form id="login_form" method="post" action="{% url 'rmr:login' %}">
-          {% csrf_token %}
-          Username: <input type="text" name="username" value="" size="50" />
-          <br />
-          Password: <input type="password" name="password" value="" size="50" />
-          <br />
-          <input type="submit" value="submit" />
-        </form>
+  .gradient-custom-2 {
+    background: #91eae4;
+    background: -webkit-linear-gradient(to right, rgba(145, 234, 228, 1), rgba(255, 177, 141, 1));
+    background: linear-gradient(to right, rgba(145, 234, 228, 1), rgba(255, 177, 141, 1));
+  }
+
+  .hover-box {
+    transition: transform 0.3s;
+  }
+
+  .hover-box:hover {
+    transform: translateY(-10px);
+  }
+</style>
+{% endblock %}
+
+{% block body_block %}
+<section class="vh-100">
+  <div class="mask d-flex align-items-center h-100 gradient-custom-1">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="card hover-box" style="border-radius: 25px;">
+            <div class="card-body p-5">
+              <h2 class="text-uppercase text-center mb-5">Login to RMR</h2>
+
+              <form method="post" action="{% url 'rmr:login' %}">
+                {% csrf_token %}
+
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="{{ form.username.auto_id }}">Username</label>
+                    <input type="text" id="{{ form.username.auto_id }}" name="{{ form.username.html_name }}" class="form-control " required />
+                </div>
+
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="{{ form.password.auto_id }}">Password</label>
+
+                  <input type="password" id="{{ form.password.auto_id }}" name="{{ form.password.html_name }}" class="form-control " required />
+                </div>
+
+                <div class="d-flex justify-content-center">
+                  <input type="submit" name="submit" value="Login" class="btn btn-primary btn-block btn-lg gradient-custom-2 text-body" />
+                </div>
+
+                <p class="text-center text-muted mt-5 mb-0">Don't have an account? <a href="{% url 'rmr:register' %}" class="fw-bold text-body"><u>Register here</u></a></p>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 {% endblock %}
