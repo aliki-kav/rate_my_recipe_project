@@ -5,6 +5,10 @@
     Search Result
 {% endblock %}
 
+{% block head_block %}
+    <link rel="stylesheet" href="{% static 'category.css' %}">
+{% endblock %}
+
 {% block body_block %}
 {% if recipes %}
 <h1>Recipes containting "{{ keyword }}": </h1><br/>

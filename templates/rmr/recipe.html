@@ -19,15 +19,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
 
     <script src="{% static 'pdfconverter.js' %}"></script>
-
-
-
 {% endblock %}
 
 {% block body_block %}
-
     {% if recipe %}
-    <div class="container my-5">
         <div id="html2pdf">
             <div class="row recipe-header mb-4">
                 <div class="col-md-8">
@@ -64,64 +59,75 @@
         </div>
         <div class="row">
             <div class="recipe-rating col-md-5">
-                <h3>Ratings</h3>
+                <h3 class="ml-2">Ratings</h3>
+                <div class="row justify-content-start">
+                <div class="star-ratings-css col ml-4">
+                <div class="star-ratings-css-top" style="width: {{ width }}%">
+                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                <div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                </div>
+                <div class="col-md-8 mt-2">
+                    {% if comments %}
+                    <div id="average-rating"><strong>{{ average }}</strong></div>
+                    {% else %}
+                    <p class="">No ratings for this recipe yet</p>
+                    {% endif %}
+                </div>
+                </div>
                 {% if comments %}
                 <div class="container-fluid" id="ratings">
                     <div class="row">
-<!--                        <div class="col-md-3">-->
-<!--                        <nav id="ratings-nav" class="navbar fixed-left navbar-light bg-light nav-pills flex-column">-->
-<!--                            <a class="nav-link" href="#comment-5">5</a>-->
-<!--                            <a class="nav-link" href="#comment-4">4</a>-->
-<!--                            <a class="nav-link" href="#comment-3">3</a>-->
-<!--                            <a class="nav-link" href="#comment-2">2</a>-->
-<!--                            <a class="nav-link" href="#comment-1">1</a>-->
-<!--                        </nav>-->
-<!--                </div>-->
                 <div class="col-md-12">
                 <div data-spy="scroll" data-target="#ratings-nav" data-offset="0" class="ratings">
                     {% for comment in comments %}
                     <div class="comment-block">
-                        <p id="comment-{{ comment.rating }}">{{ comment.user }}: <br/>
-                            rating: {{ comment.rating }} <br/>
-                            comment: {{ comment.comment }} <br/>
-                        </p>
+                            {% if comment.user == user %}
+                            <div id="my-rating">
+                            <p id="comment-{{ comment.rating }}">{{ comment.user }}: <br/>
+                            rating: {{ comment.rating_stars }} <br/>
+                            comment: {{ comment.comment }}</p>
+<!--                                <button type="submit" class="btn btn-secondary">Delete</button>-->
+                            </div>
+                            {% else %}
+                            <p id="comment-{{ comment.rating }}">{{ comment.user }}: <br/>
+                            rating: {{ comment.rating_stars }} <br/>
+                            comment: {{ comment.comment }} <br/></p>
+                            {% endif %}
+
                     </div>
                     {% endfor %}
                 </div>
                 </div>
                 </div>
                 </div>
-                {% else %}
-                <p>No ratings for this recipe yet</p>
                 {% endif %}
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-5">
+        <div class="row mb-5">
+            <div class="col-md-5 recipe-rating">
                 {% if user.is_anonymous %}
                 <p>Log in to rate recipes!</p>
                 {% else %}
-                {% if user_rating %}
-                    <h3>Your rating:</h3>
-                    <p>Rating: {{ user_rating.rating }} </p>
-                    <p>Comment: {{ user_rating.comment }}</p>
-                {% else %}
+                {% if not user_rating %}
                     <h3>Rate this recipe</h3>
-                    <form id="rating_form" method="post" action="{% url 'rmr:show_recipe' recipe.category.slug recipe.slug %}">
-                        {% csrf_token %}
-                        {% for hidden in form.hidden_fields %}
-                           {{ hidden }}
-                        {% endfor %}
-                        <div class="form-group mt-4 mb-2">
-                        {% for field in form.visible_fields %}
-                                {{ field.label_tag }}
-                                {{ field }}
-                            {{ field.errors }}
-                            {{ field.help_text }}
-                        {% endfor %}
+                <form method="post" action="{% url 'rmr:show_recipe' recipe.category.slug recipe.slug %}">
+                    {% csrf_token %}
+                    <div class="form-row">
+                    <textarea name="comment" id="comment" class="form-control"  rows="4" placeholder="comment"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Create Rating</button>
+                    <div class="form-row justify-content-between">
+                    <div class="rating col mt-2">
+                      <input type="radio" name="rating" value="5" role="button" id="5"><label for="5">5</label>
+                      <input type="radio" name="rating" value="4" id="4"><label for="4">4</label>
+                      <input type="radio" name="rating" value="3" id="3"><label for="3">3</label>
+                      <input type="radio" name="rating" value="2" id="2"><label for="2">2</label>
+                      <input type="radio" name="rating" value="1" id="1"><label for="1">1</label>
+                    </div>
+                    <div class="col-md-2 mt-2">
+                        <button type="submit" class="btn btn-primary">Rate</button>
+                    </div>
+                    </div>
                     </form>
                 {% endif %}
                 {% endif %}
@@ -139,6 +145,6 @@
     {% else %}
     The specified recipe doesn't exist
     {% endif %}
-   
+
  
 {% endblock %}
