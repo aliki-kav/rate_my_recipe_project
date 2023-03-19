@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from django.db.models import Avg, Sum
-from rmr.models import Category, Page, Rating, UserProfile, Recipe
+from rmr.models import Category, Page, Rating, UserProfile, Recipe, User
 from rmr.forms import CategoryForm, PageForm, UserForm, UserProfileForm,RecipeForm,RatingForm
 from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404
@@ -142,7 +142,9 @@ def register(request):
                 profile.picture = request.FILES['picture']
             profile.save()
             registered = True
+            return JsonResponse({'success': True})
         else:
+            return JsonResponse({'success': False})
             print(user_form.errors, profile_form.errors)
     else:
         user_form = UserForm()

@@ -60,7 +60,7 @@ class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     rating = models.IntegerField()
-    rating_stars = models.CharField(max_length=5, )
+    rating_stars = models.CharField(max_length=5,blank=True )
     comment = models.CharField(max_length=1000, blank=True)
 
     def __str__(self):
