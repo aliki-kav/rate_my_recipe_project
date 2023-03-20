@@ -6,7 +6,9 @@
 
 {% endblock %}
 
-
+{% block head_block %}
+    <script src="{% static 'toasts.js' %}"></script>
+{% endblock %}
 
 {% block body_block %}
 {% if max_views %}
