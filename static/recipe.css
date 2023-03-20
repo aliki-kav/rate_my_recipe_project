@@ -81,7 +81,7 @@
   flex-direction: row-reverse;
 }
 
-.ratings{
+.ratings {
   position: relative;
   height: 300px;
   overflow: scroll;
