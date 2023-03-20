@@ -166,6 +166,8 @@ def userprofile(request, username):
         recipes = Recipe.objects.filter(user=userprofile.user)
         if recipes:
             max_views = recipes.aggregate(Sum('views'))['views__sum']
+        else:
+            max_views = -1
         return render(request, 'rmr/user_profile.html', {'userprofile': userprofile,
                                                          'ratings': ratings,
                                                          'recipes': recipes,
