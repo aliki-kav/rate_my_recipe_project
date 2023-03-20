@@ -35,7 +35,7 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ( )
+        fields = ()
 
 
 class RatingForm(forms.ModelForm):
