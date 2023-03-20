@@ -6,7 +6,6 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE',
 import django
 django.setup()
 from django.contrib.auth.models import User
-
 from rmr.models import Category,Recipe, UserProfile, Rating
 from django.utils.text import slugify
 
