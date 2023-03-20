@@ -19,20 +19,9 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-
-class Page(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    title = models.CharField(max_length=128)
-    url = models.URLField()
-    views = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.title
-
-
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    picture = models.ImageField(upload_to='profile_images', blank=True)
+
 
     def __str__(self):
         return self.user.username
@@ -60,7 +49,7 @@ class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     rating = models.IntegerField()
-    rating_stars = models.CharField(max_length=5, )
+    rating_stars = models.CharField(max_length=5,blank=True )
     comment = models.CharField(max_length=1000, blank=True)
 
     def __str__(self):

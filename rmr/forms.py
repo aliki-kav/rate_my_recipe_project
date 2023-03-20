@@ -1,7 +1,7 @@
 from django import forms
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-from rmr.models import Category, Page, UserProfile, Recipe, Rating
+from rmr.models import Category, UserProfile, Recipe, Rating
 from django.contrib.auth.models import User
 
 
@@ -17,24 +17,12 @@ class CategoryForm(forms.ModelForm):
         fields = ('name',)
 
 
-class PageForm(forms.ModelForm):
-    title = forms.CharField(max_length=128,
-                            help_text="Please enter the title of the page.")
-    url = forms.URLField(max_length=200, help_text="Please enter the URL of the page")
-    views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
-
+class RecipeForm(forms.ModelForm):
+    slug = forms.CharField(widget=forms.HiddenInput(), required=False)
+    views = forms.IntegerField(widget=forms.HiddenInput(), initial=0, required=False)
     class Meta:
-        model = Page
-        exclude = ('category',)
-
-    def clean(self):
-        cleaned_data = self.cleaned_data
-        url = cleaned_data.get('url')
-        if url and not url.startswith('http://') and not url.startswith('https://'):
-            url = f'http://{url}'
-            cleaned_data['url'] = url
-        return cleaned_data
-
+        model = Recipe
+        fields = ('title', 'description', 'image', 'instructions', 'category', 'views')
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -47,7 +35,7 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ( 'picture',)
+        fields = ( )
 
 
 class RatingForm(forms.ModelForm):
@@ -66,10 +54,5 @@ class RatingForm(forms.ModelForm):
 
 
 
-class RecipeForm(forms.ModelForm):
-    slug = forms.CharField(widget=forms.HiddenInput(), required=False)
-    views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
-    class Meta:
-        model = Recipe
-        fields = ('title', 'description', 'image', 'instructions', 'category', 'views')
+
 

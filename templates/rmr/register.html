@@ -5,22 +5,85 @@
         Register
 {% endblock %}
 
+{% block head_block %}#
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"  ></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+<script>
+ $(document).ready(function () {
+  const registerForm = $('#register-form');
+
+  registerForm.on('submit', async function (event) {
+    event.preventDefault();
+    const response = await fetch('{% url "rmr:register" %}', {
+      method: 'POST',
+      body: new FormData(registerForm[0]),
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}',
+      },
+    });
+    const data = await response.json();
+    if (data.success) {
+      alert('Registration successful!');
+      window.location.href = '{% url "rmr:login" %}';
+    } else {
+      alert('Registration unsuccessful, email or user are already in use. Please try again.');
+    }
+  });
+});
+
+</script>
+
+
+{% endblock %}
+
+
 {% block body_block %}
-        <h1>Register for rmr</h1>
-        {% if registered %}
-        rmr says: <strong>thank you for registering!</strong>
-        <a href="{% url 'rmr:index' %}">Return to the homepage.</a><br />
-        {% else %}
-        rmr says: <strong>register here!</strong>
-        <form id="user_form" method="post" action="{% url 'rmr:register' %}" enctype="multipart/form-data">
-          {% csrf_token %}
+<section class="vh-100">
+  <div class="mask d-flex align-items-center h-100 gradient-custom-1">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="card hover-box" style="border-radius: 25px;">
+            <div class="card-body p-5">
+              <h2 class="text-uppercase text-center mb-5">Join RMR</h2>
 
-          <!-- Display each form -->
-          {{ user_form.as_p }}
-          {{ profile_form.as_p }}
+              <form id="register-form" method="post" action="{% url 'rmr:register' %}" enctype="multipart/form-data">
+                {% csrf_token %}
 
-          <!-- Provide a button to to click to submit the form -->
-          <input type="submit" name="submit" value="Register" />
-        </form>
-        {% endif %}
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="{{ user_form.username.auto_id }}">Username</label>
+                    <input type="text" id="{{ user_form.username.auto_id }}" name="{{ user_form.username.html_name }}" class="form-control " required />
+                </div>
+
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="{{ user_form.email.auto_id }}">Email</label>
+
+                  <input type="email" id="{{ user_form.email.auto_id }}" name="{{ user_form.email.html_name }}" class="form-control " required />
+                </div>
+
+                 <div class="form-outline mb-4">
+                     <label class="form-label" for="{{ user_form.password.auto_id }}">Password</label>
+                    <input type="password" id="{{ user_form.password.auto_id }}" name="{{ user_form.password.html_name }}" class="form-control " required />
+                </div>
+
+
+                <div class="d-flex justify-content-center">
+                  <input type="submit" id="register-button" name="submit" value="Register" class="btn btn-primary btn-block btn-lg gradient-custom-2 text-body" />
+                </div>
+
+                <p class="text-center text-muted mt-5 mb-0">Already have an account? <a href="{% url 'rmr:login' %}" class="fw-bold text-body"><u>Log in here</u></a></p>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 {% endblock %}

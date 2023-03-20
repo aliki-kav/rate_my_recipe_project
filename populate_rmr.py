@@ -6,8 +6,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE',
 import django
 django.setup()
 from django.contrib.auth.models import User
-
-from rmr.models import Category, Page, Recipe, UserProfile, Rating
+from rmr.models import Category,Recipe, UserProfile, Rating
 from django.utils.text import slugify
 
 
@@ -80,6 +79,35 @@ def populate():
             'category': lunch,
             'user': User.objects.get(username='jane'),
             'image': 'images/blt.jpg'
+        },
+        {
+            'title': 'pasta carbonara',
+            'description': 'Savor the delightful flavors of our Authentic Italian Carbonara. '
+                           'This traditional pasta dish unites perfectly cooked spaghetti with '
+                           'crispy guanciale, eggs, and freshly grated Pecorino Romano '
+                           'cheese to create an irresistible and comforting meal that pays homage '
+                           'to its Roman roots.',
+            'instructions': 'Bring a large pot of salted water to a boil. Cook the spaghetti according '
+                            'to the package instructions until al dente. Reserve 1 cup of pasta water before '
+                            'draining the spaghetti.While the pasta cooks, cut the guanciale into 1/4-inch-thick '
+                            'strips. In a large skillet over medium heat, cook the guanciale until crispy and the '
+                            'fat has rendered, about 5-7 minutes. Remove the guanciale with a slotted spoon and '
+                            'set aside, leaving the fat in the skillet.In a medium bowl, whisk together the eggs '
+                            'and Pecorino Romano cheese until well combined. Set aside.Add the drained spaghetti '
+                            'to the skillet with the guanciale fat over low heat. Toss the pasta to coat it in the '
+                            'fat.Remove the skillet from the heat. Slowly pour the egg and cheese mixture into the '
+                            'pasta while continuously tossing the spaghetti to prevent the eggs from scrambling. '
+                            'The residual heat from the pasta will cook the eggs and create a creamy sauce.If the '
+                            'sauce is too thick, gradually add the reserved pasta water, a tablespoon at a time, '
+                            'while continuing to toss the pasta until the desired consistency is reached.Stir in '
+                            'the cooked guanciale and season with freshly ground black pepper to taste.Serve '
+                            'immediately, garnished with additional grated Pecorino Romano cheese'
+                            ' and more black pepper if desired.',
+            'category': lunch,
+            'user': User.objects.get(username='bob'),
+            'image': 'images/carbonara.jpg'
+
+
         }
     ]
     for recipe_data in lunch_recipes:
