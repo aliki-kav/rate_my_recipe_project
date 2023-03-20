@@ -7,7 +7,7 @@ import django
 django.setup()
 from django.contrib.auth.models import User
 
-from rmr.models import Category, Page, Recipe, UserProfile, Rating
+from rmr.models import Category,Recipe, UserProfile, Rating
 from django.utils.text import slugify
 
 

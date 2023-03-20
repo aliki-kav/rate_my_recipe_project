@@ -8,8 +8,8 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from django.db.models import Avg, Sum
-from rmr.models import Category, Page, Rating, UserProfile, Recipe, User
-from rmr.forms import CategoryForm, PageForm, UserForm, UserProfileForm,RecipeForm,RatingForm
+from rmr.models import Category, Rating, UserProfile, Recipe, User
+from rmr.forms import CategoryForm, UserForm, UserProfileForm, RecipeForm, RatingForm
 from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404
 
@@ -76,54 +76,6 @@ def show_category(request, category_name_slug):
     return render(request, 'rmr/category.html', context=context_dict)
 
 
-@login_required
-def add_category(request):
-    form = CategoryForm()
-    category_list = Category.objects.all()
-    if request.method == 'POST':
-        form = CategoryForm(request.POST)
-        if form.is_valid():
-            cat = form.save(commit=True)
-            print(cat, cat.slug)
-            return redirect('/rmr/')
-        else:
-            print(form.errors)
-    return render(request, 'rmr/add_category.html', {'form': form, 'categories': category_list})
-
-
-@login_required
-def add_page(request, category_name_slug):
-    try:
-        print(category_name_slug)
-        category = Category.objects.get(slug=category_name_slug)
-
-    except Category.DoesNotExist:
-        category = None
-
-    if category is None:
-        print('category is none')
-        return redirect('/rmr/')
-
-    form = PageForm()
-
-    if request.method == 'POST':
-        form = PageForm(request.POST)
-
-        if form.is_valid():
-            page = form.save(commit=False)
-            page.category = category
-            page.views = 0
-            page.save()
-
-            return redirect(reverse('rmr:show_category', kwargs={'category_name_slug': category_name_slug}))
-        else:
-            print(form.errors)
-    context_dict = {'form': form, 'category': category}
-    return render(request, 'rmr/add_page.html', context=context_dict)
-
-
-
-
 def register(request):
     registered = False
     category_list = Category.objects.all()
@@ -182,9 +134,7 @@ def user_logout(request):
     return redirect(reverse('rmr:index'))
 
 
-@login_required
-def restricted(request):
-    return render(request, 'rmr/restricted.html')
+
 
 
 def get_server_side_cookie(request, cookie, default_val=None):
