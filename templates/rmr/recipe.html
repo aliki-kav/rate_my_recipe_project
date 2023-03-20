@@ -107,7 +107,9 @@
         <div class="row mb-5">
             <div class="col-md-5 recipe-rating">
                 {% if user.is_anonymous %}
-                <p>Log in to rate recipes!</p>
+                <p>Login/Register to rate recipes!</p>
+                <a href="{% url 'rmr:login' %}" class="btn btn-primary">Login</a>
+                <a href="{% url 'rmr:register' %}" class="btn btn-primary">Register</a>
                 {% else %}
                 {% if not user_rating %}
                     <h3>Rate this recipe</h3>
@@ -141,10 +143,10 @@
             </div>
         </div>
     </div>
-    
+
     {% else %}
     The specified recipe doesn't exist
     {% endif %}
 
- 
+
 {% endblock %}

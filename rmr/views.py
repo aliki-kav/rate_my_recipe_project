@@ -199,7 +199,8 @@ def show_recipe(request, category_name_slug, recipe_title_slug):
         context_dict['recipe'] = recipe
         ratings = Rating.objects.filter(recipe=recipe).order_by('-rating')
         if ratings:
-            context_dict['average'] = ratings.aggregate(Avg('rating'))['rating__avg']
+            average = ratings.aggregate(Avg('rating'))['rating__avg']
+            context_dict['average'] = round(average, 2)
             context_dict['width'] = int(float(context_dict['average'])/5*100)
         else:
             context_dict['average'] = 0

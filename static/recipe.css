@@ -84,27 +84,21 @@
 .ratings{
   position: relative;
   height: 300px;
-  
-
-.star-ratings-sprite-rating {
-  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2605/star-rating-sprite.png") repeat-x;
-  background-position: 0 100%;
-  float: left;
-  height: 21px;
-  display: block;
+  overflow: scroll;
 }
 
+.navbar#ratings-nav{
+  height: 300px;
+}
 
-.recipe-rating {
+.container-fluid#ratings{
   margin-top: 2rem;
-  padding: 2rem;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  background-color: #f5f5f5;
+  margin-bottom: 2rem;
 }
 
-#my-rating {
-  color: #A52A2A;
+.comment-block{
+  border-bottom-style: dotted;
+  margin-bottom: 1rem;
 }
 
 .stick-top{
@@ -172,9 +166,6 @@
 #my-rating {
   color: #A52A2A;
 }
-
-
-
 
 
 
