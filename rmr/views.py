@@ -118,12 +118,12 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
-                return redirect(reverse('rmr:index'))
+                return JsonResponse({'success': True})
             else:
                 return HttpResponse("Your rmr account is disabled.")
         else:
             print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
+            return JsonResponse({'success': False})
     else:
         return render(request, 'rmr/login.html', context={'categories': category_list})
 

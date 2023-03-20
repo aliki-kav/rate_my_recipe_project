@@ -6,7 +6,31 @@
 {% endblock %}
 
 {% block head_block %}
-        <link rel="stylesheet" type="text/css" href="{% static 'register.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'login.css' %}">
+        <script>
+         $(document).ready(function () {
+          const loginForm = $('#login_form');
+
+          loginForm.on('submit', async function (event) {
+            event.preventDefault();
+            const response = await fetch('{% url "rmr:login" %}', {
+              method: 'POST',
+              body: new FormData(loginForm[0]),
+              headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+              },
+            });
+            const data = await response.json();
+            if (data.success) {
+              alert('Welcome back!');
+              window.location.href = '{% url "rmr:index" %}';
+            } else {
+              alert('Wrong username or password provided. Please try again.');
+            }
+          });
+        });
+
+</script>
 {% endblock %}
 
 {% block body_block %}
