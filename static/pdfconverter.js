@@ -9,15 +9,20 @@ $j(document).ready(function() {
                 var recipeDescription = data.description;
                 var recipeInstructions = data.instructions;
                 var pdf = new jspdf.jsPDF();
-                //want to make pdf text bigger
                 pdf.setFontSize(30);
-                //want to center the text
-
                 pdf.text(50, 20, recipeTitle);
                 pdf.setFontSize(12);
 
-                pdf.text(10, 60, "Description: "+recipeDescription);
-                pdf.text(10, 80, "Instruction: "+recipeInstructions);
+                var maxWidth = 180;
+                var lineHeight = 7;
+
+                var splitDescription = pdf.splitTextToSize("Description: " + recipeDescription, maxWidth);
+                pdf.text(10, 60, splitDescription);
+
+                var splitInstructions = pdf.splitTextToSize("Instructions: " + recipeInstructions, maxWidth);
+                var instructionsY = 60 + (splitDescription.length * lineHeight) + 10; // Calculate Y position for instructions
+                pdf.text(10, instructionsY, splitInstructions);
+
                 pdf.save(recipeTitle + ".pdf");
             },
             error: function(jqXHR, textStatus, errorThrown) {
