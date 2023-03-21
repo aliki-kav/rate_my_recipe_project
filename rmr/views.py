@@ -192,6 +192,12 @@ def add_recipe(request, username):
         form = RecipeForm()
     return render(request, 'rmr/add_recipe.html', {'form': form, 'username': username, 'categories': category_list})
 
+@login_required
+def delete_recipe(request, username, slug):
+    toDelete=Recipe.objects.get(slug=slug)
+    toDelete.delete()
+    return redirect(reverse('rmr:index'))
+
 
 def show_recipe(request, category_name_slug, recipe_title_slug):
     category_list = Category.objects.all()
