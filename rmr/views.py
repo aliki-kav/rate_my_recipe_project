@@ -196,7 +196,7 @@ def add_recipe(request, username):
 def delete_recipe(request, username, slug):
     toDelete=Recipe.objects.get(slug=slug)
     toDelete.delete()
-    return redirect(reverse('rmr:index'))
+    return redirect(reverse('rmr:userprofile', kwargs={'username':username}))
 
 
 def show_recipe(request, category_name_slug, recipe_title_slug):

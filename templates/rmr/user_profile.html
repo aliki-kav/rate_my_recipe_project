@@ -8,6 +8,7 @@
 
 {% block head_block %}
     <script src="{% static 'toasts.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'user_profile.css' %}">
 {% endblock %}
 
 {% block body_block %}
@@ -36,7 +37,16 @@
 <div class="recipe">
     <li>
         <a href="{% url 'rmr:show_recipe' recipe.category.slug recipe.slug %}">{{ recipe.title }}</a>
-        <a href="{% url 'rmr:delete_recipe' username=request.user.username slug=recipe.slug %}" class="btn btn-primary">Delete this Recipe</a>
+        <a href="{% url 'rmr:delete_recipe' username=request.user.username slug=recipe.slug %}"  onclick="return confirmDelete();" class="btn btn-delete">Delete this Recipe</a>
+        <script>
+            const confirmDelete=()=>{
+                const reply=confirm("Are you sure you want to delete this recipe?");
+                if (!reply){
+                    return false;
+                }
+            
+            }
+        </script>
 
 
     </li>
