@@ -36,6 +36,8 @@
 <div class="recipe">
     <li>
         <a href="{% url 'rmr:show_recipe' recipe.category.slug recipe.slug %}">{{ recipe.title }}</a>
+        <a href="{% url 'rmr:delete_recipe' username=request.user.username slug=recipe.slug %}" class="btn btn-primary">Delete this Recipe</a>
+
 
     </li>
 
@@ -68,7 +70,7 @@
 <form enctype="multipart/form-data" method="post">
     {% csrf_token %}
     {{ recipe_form.as_p }}
-<a href="{% url 'rmr:add_recipe' username=userprofile.user.username %}">Add Recipe</a>
+    <a href="{% url 'rmr:add_recipe' username=request.user.username %}" class="btn btn-primary">Add a New Recipe</a>
 
 
 </form>
