@@ -103,4 +103,3 @@ class ViewsTests(TestCase):
         self.assertTemplateUsed(self.client.get(reverse('rmr:login')), 'rmr/login.html', f"{FAILURE_HEADER}Your user_login() view does not use the expected login.html template.{FAILURE_FOOTER}")
         self.assertTemplateUsed(self.client.get(reverse('rmr:show_recipe', args=('breakfast', 'pancakes'))), 'rmr/recipe.html', f"{FAILURE_HEADER}Your show_recipe() view does not use the expected recipe.html template.{FAILURE_FOOTER}")
         self.assertTemplateUsed(self.client.get(reverse('rmr:search')), 'rmr/search.html', f"{FAILURE_HEADER}Your search() view does not use the expected search.html template.{FAILURE_FOOTER}")
-        
