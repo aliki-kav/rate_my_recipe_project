@@ -81,7 +81,33 @@
   flex-direction: row-reverse;
 }
 
-.ratings {
+.rating > input{ display:none;}
+
+.rating > label {
+  position: relative;
+  width: 1em;
+  font-size: 1.8vw;
+  color: #A52A2A;
+  cursor: pointer;
+}
+
+.rating > label::before{
+  content: "\2605";
+  position: absolute;
+  opacity: 0;
+}
+.rating > label:hover:before,
+.rating > label:hover ~ label:before {
+  opacity: 1 !important;
+}
+
+.rating > input:checked ~ label:before{
+  opacity:1;
+}
+
+.rating:hover > input:checked ~ label:before{ opacity: 0.4; }
+
+.ratings{
   position: relative;
   height: 300px;
   overflow: scroll;
@@ -101,10 +127,7 @@
   margin-bottom: 1rem;
 }
 
-.stick-top{
-  position: absolute;
-  top: 80px;
-}
+
 
 .star-ratings-css {
       unicode-bidi: bidi-override;
@@ -166,6 +189,7 @@
 #my-rating {
   color: #A52A2A;
 }
+
 
 
 
