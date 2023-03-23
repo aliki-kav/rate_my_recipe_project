@@ -3,6 +3,7 @@ from datetime import datetime
 from django.conf.global_settings import MEDIA_URL
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.db.models import Q
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
@@ -36,21 +37,15 @@ def index(request):
     return response
 
 
-def about(request):
-    visitor_cookie_handler(request)
-    visits = request.session['visits']
-    category_list = Category.objects.all()
-    context_dict = {'boldmessage': 'Team8A',
-                    'visits': visits,
-                    'categories': category_list
-                    }
+@login_required
+def delete_user(request, username):
+    if request.method == 'POST':
+        user = request.user
+        user.delete()
+        logout(request)
+        return redirect('rmr:index')
 
-    if request.session.test_cookie_worked():
-        print("TEST COOKIE WORKED!")
-        request.session.delete_test_cookie()
-
-    return render(request, 'rmr/about.html', context=context_dict)
-
+    return render(request, 'rmr/delete_user.html', {'username': username})
 
 def show_category(request, category_name_slug):
     print(category_name_slug)
@@ -126,6 +121,19 @@ def user_login(request):
             return JsonResponse({'success': False})
     else:
         return render(request, 'rmr/login.html', context={'categories': category_list})
+
+
+
+def delete_account(request):
+    if request.method == 'POST':
+        user = request.user
+        user.delete()
+        messages.success(request, 'Your account has been successfully deleted.')
+        logout(request)
+        return redirect('rmr:index')
+
+    return render(request, 'rmr/user_profile.html')
+
 
 
 def user_logout(request):

@@ -8,7 +8,10 @@
 {% block head_block %}
 
     <script src="{% static 'register.js' %}"></script>
-    <script>  const register_url="{% url 'rmr:register' %}"</script>
+    <script>
+      const register_url="{% url 'rmr:register' %}"
+      const login_url="{% url 'rmr:login' %}"
+    </script>
 
 {% endblock %}
 

@@ -18,5 +18,6 @@ urlpatterns = [
     path('goto/', views.goto_url, name='goto'),
     path('search/', views.search, name='search'),
     path('get_recipe_data/<int:recipe_id>/', views.get_recipe_data, name='get_recipe_data'),
+    path('delete_account/', views.delete_account, name='delete_account'),
 
 ]

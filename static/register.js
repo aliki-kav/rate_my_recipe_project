@@ -13,7 +13,7 @@ $(document).ready(function () {
     const data = await response.json();
     if (data.success) {
       alert('Registration successful!');
-      window.location.href = '{% url "rmr:login" %}';
+      window.location.href = login_url;
     } else {
       alert('Registration unsuccessful, email or user are already in use. Please try again.');
     }
