@@ -3,19 +3,18 @@
 
 {% block title_block %}
 {{ userprofile.user.username }}'s Profile
-
 {% endblock %}
 
 {% block head_block %}
     <script src="{% static 'toasts.js' %}"></script>
-    <script src="{% static 'deletepage.js' %}"></script>
 
     <link rel="stylesheet" href="{% static 'user_profile.css' %}">
 {% endblock %}
 
 {% block body_block %}
-{% if max_views > 0 %}
-        <div class="toast" id="myToast" data-delay="10000"  style="position: absolute; top: 1; right: 0; z-index:1;">
+<div class="container">
+    {% if max_views > 0 %}
+    <div class="toast" id="myToast" data-delay="10000"  style="position: absolute; top: 1; right: 0; z-index:1;">
         <div class="toast-header">
             <strong class="mr-auto toast-placeholder"><i class="fa fa-grav"></i> Good job pal! </strong>
             <small>Just now</small>
@@ -25,55 +24,62 @@
             Your recipes have been viewed {{ max_views }} times!</a>
         </div>
     </div>
-{% endif %}
-<h1>{{ userprofile.user.username }}'s Profile</h1>
-<p>Email: {{ userprofile.user.email }}</p>
-<h2>{{ userprofile.user.username }}'s Uploaded Recipes:</h2>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center">{{ userprofile.user.username }}'s Profile</h1>
+            <p class="text-center">Email: {{ userprofile.user.email }}</p>
+        </div>
+    </div>
 
-{% if recipes %}
-{% for recipe in recipes %}
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h2>{{ userprofile.user.username }}'s Uploaded Recipes:</h2>
+            <ul class="list-group">
+                {% if recipes %}
+                {% for recipe in recipes %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{% url 'rmr:show_recipe' recipe.category.slug recipe.slug %}">{{ recipe.title }}</a>
+                    <a href="{% url 'rmr:delete_recipe' username=request.user.username slug=recipe.slug %}"  onclick="return confirmDelete();" class="btn btn-danger">Delete</a>
+                </li>
+                {% endfor %}
+                {% else %}
+                <p>No recipes uploaded yet.</p>
+                {% endif %}
+            </ul>
+        </div>
 
+        <div class="col-md-6">
+            <h2>{{ userprofile.user.username }}'s Ratings:</h2>
+            <ul class="list-group">
+                {% if ratings %}
+                {% for rating in ratings %}
+                <li class="list-group-item">
+                    <a href="{% url 'rmr:show_recipe' rating.recipe.category.slug rating.recipe.slug %}">{{ rating.recipe.title }}</a>
+                    <p>Your rating: {{ rating.rating }}</p>
+                    <p>Your comment: {{ rating.comment }}</p>
+                </li>
+                {% endfor %}
+                {% else %}
+                <p>No ratings left yet.</p>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
 
-<div class="recipe">
-    <li>
-        <a href="{% url 'rmr:show_recipe' recipe.category.slug recipe.slug %}">{{ recipe.title }}</a>
-        <a href="{% url 'rmr:delete_recipe' username=request.user.username slug=recipe.slug %}"  onclick="return confirmDelete();" class="btn btn-delete">Delete this Recipe</a>
-
-
-    </li>
-
+    {% if request.user.username == userprofile.user.username %}
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2>Add a New Recipe:</h2>
+                    <form method="post" action="{% url 'rmr:add_recipe' username=request.user.username %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Add Recipe</button>
+        </form>
+    </div>
 </div>
-{% endfor %}
-
-{% else %}
-<p>No recipes uploaded yet.</p>
 {% endif %}
-
-<h2>{{ userprofile.user.username }}'s Ratings:</h2>
-{% if ratings %}
-{% for rating in ratings %}
-<div class="rating">
-    <li>
-        <a href="{% url 'rmr:show_recipe' rating.recipe.category.slug rating.recipe.slug %}">{{ rating.recipe.title }}</a>
-        <p>Your rating: {{ rating.rating }}</p>
-        <p>Your comment: {{ rating.comment }}</p>
-    </li>
-
 </div>
-{% endfor %}
 
-{% else %}
-<p>No ratings left yet.</p>
-{% endif %}
-
-{% if request.user.username == userprofile.user.username %}
-<h2>Add a New Recipe:</h2>
-<form enctype="multipart/form-data" method="post">
-    {% csrf_token %}
-    {{ recipe_form.as_p }}
-    <a href="{% url 'rmr:add_recipe' username=request.user.username %}" class="btn btn-primary">Add a New Recipe</a>
-
-
-</form>
-{% endif %}
 {% endblock %}
+
