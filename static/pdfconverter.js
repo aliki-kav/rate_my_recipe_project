@@ -25,13 +25,27 @@ $j(document).ready(function () {
 
                 pdf.text(10, 50, "Description:");
                 var splitDescription = pdf.splitTextToSize(recipeDescription, maxWidth);
-                pdf.text(10, 60, splitDescription);
+                var descriptionTextY = 60;
+                for (var i = 0; i < splitDescription.length; i++) {
+                    if (descriptionTextY > pdf.internal.pageSize.height - 20) {
+                        pdf.addPage();
+                        descriptionTextY = 20;
+                    }
+                    pdf.text(10, descriptionTextY, splitDescription[i]);
+                    descriptionTextY += lineHeight;
+                }
 
-                var instructions = 60 + (splitDescription.length * lineHeight) + 10;
-                pdf.text(10, instructions, "Instructions:");
+                pdf.text(10, descriptionTextY, "Instructions:");
                 var splitInstructions = pdf.splitTextToSize(recipeInstructions, maxWidth);
-                var instructionsTextY = instructions + lineHeight;
-                pdf.text(10, instructionsTextY, splitInstructions);
+                var instructionsTextY = descriptionTextY + lineHeight;
+                for (var j = 0; j < splitInstructions.length; j++) {
+                    if (instructionsTextY > pdf.internal.pageSize.height - 20) {
+                        pdf.addPage();
+                        instructionsTextY = 20;
+                    }
+                    pdf.text(10, instructionsTextY, splitInstructions[j]);
+                    instructionsTextY += lineHeight;
+                }
 
                 pdf.save(recipeTitle + ".pdf");
             },
