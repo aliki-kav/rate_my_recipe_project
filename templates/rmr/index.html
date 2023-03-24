@@ -33,7 +33,8 @@
                 <ul class="list-group list-group-flush">
                     {% for category in categories_sorted %}
                         <li class="list-group-item">
-                            <a href="{% url 'rmr:show_category' category.slug %}">{{ category.name }}</a>
+                            <a href="{% url 'rmr:show_category' category.slug %}" class="stretched-link"></a>
+                            {{ category.name }}
                         </li>
                     {% endfor %}
                 </ul>
@@ -49,7 +50,8 @@
                         <ul class="list-group list-group-flush">
                             {% for recipe in recipes %}
                                 <li class="list-group-item">
-                                    <a href="{% url 'rmr:goto' %}?recipe_id={{ recipe.id }}">{{ recipe.title }}</a>
+                                    <a href="{% url 'rmr:goto' %}?recipe_id={{ recipe.id }}" class="stretched-link"></a>
+                                    {{ recipe.title }}
                                 </li>
                             {% endfor %}
                         </ul>
